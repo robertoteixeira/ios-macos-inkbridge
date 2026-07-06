@@ -1,7 +1,10 @@
 .DS_Store
+
+# Xcode user state
 xcuserdata/
+*.xcuserstate
+
 DerivedData/
 .build/
 .swiftpm/
 Package.resolved
-*.xcuserstate
