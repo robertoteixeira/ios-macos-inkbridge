@@ -1,2 +1,62 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+import Foundation
+
+public enum RemoteMode: String, Codable, Sendable {
+    case overlay
+    case tablet
+}
+
+public enum DrawingTool: String, Codable, Sendable {
+    case pen
+    case marker
+    case highlighter
+    case eraser
+    case laserPointer
+}
+
+public struct StrokePoint: Codable, Sendable, Equatable {
+    public let x: Double
+    public let y: Double
+    public let pressure: Double
+    public let timestamp: TimeInterval
+
+    public init(
+        x: Double,
+        y: Double,
+        pressure: Double,
+        timestamp: TimeInterval
+    ) {
+        self.x = x
+        self.y = y
+        self.pressure = pressure
+        self.timestamp = timestamp
+    }
+}
+
+public struct StrokeStyle: Codable, Sendable, Equatable {
+    public let colorHex: String
+    public let width: Double
+    public let opacity: Double
+    public let tool: DrawingTool
+
+    public init(
+        colorHex: String,
+        width: Double,
+        opacity: Double,
+        tool: DrawingTool
+    ) {
+        self.colorHex = colorHex
+        self.width = width
+        self.opacity = opacity
+        self.tool = tool
+    }
+}
+
+public enum RemoteInputEvent: Codable, Sendable, Equatable {
+    case strokeBegan(StrokePoint, StrokeStyle)
+    case strokeMoved([StrokePoint])
+    case strokeEnded(StrokePoint)
+    case clearCanvas
+    case undeo
+    case redo
+    case modeChanged(RemoteMode)
+}
