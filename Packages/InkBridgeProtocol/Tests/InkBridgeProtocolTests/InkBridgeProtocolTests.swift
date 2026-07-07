@@ -16,7 +16,7 @@ import Testing
     #expect(decoded == point)
 }
 
-@Test func remoteInputEventStrokeBeganRoudTrips() throws {
+@Test func remoteInputEventStrokeBeganRoundTrips() throws {
     let point = StrokePoint(
         x: 0.1,
         y: 0.2,

@@ -56,7 +56,7 @@ public enum RemoteInputEvent: Codable, Sendable, Equatable {
     case strokeMoved([StrokePoint])
     case strokeEnded(StrokePoint)
     case clearCanvas
-    case undeo
+    case undo
     case redo
     case modeChanged(RemoteMode)
 }
