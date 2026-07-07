@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0342629B2FFD8F3C0049360B /* InkBridgeProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 0342629A2FFD8F3C0049360B /* InkBridgeProtocol */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		03362BAA2FFBF00A003486F2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0342629B2FFD8F3C0049360B /* InkBridgeProtocol in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = InkBridgePad;
 			packageProductDependencies = (
+				0342629A2FFD8F3C0049360B /* InkBridgeProtocol */,
 			);
 			productName = InkBridgePad;
 			productReference = 03362B9C2FFBF008003486F2 /* InkBridgePad.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 03362B932FFBF008003486F2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				034262992FFD8F3C0049360B /* XCLocalSwiftPackageReference "../../Packages/InkBridgeProtocol" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 03362B9D2FFBF008003486F2 /* Products */;
 			projectDirPath = "";
@@ -578,6 +587,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		034262992FFD8F3C0049360B /* XCLocalSwiftPackageReference "../../Packages/InkBridgeProtocol" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../Packages/InkBridgeProtocol;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0342629A2FFD8F3C0049360B /* InkBridgeProtocol */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InkBridgeProtocol;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 03362B942FFBF008003486F2 /* Project object */;
 }
