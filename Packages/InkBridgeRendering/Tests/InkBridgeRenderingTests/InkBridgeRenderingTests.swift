@@ -1,8 +1,14 @@
 import Testing
 @testable import InkBridgeRendering
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-    // Swift Testing Documentation
-    // https://developer.apple.com/documentation/testing
+@Test func normalizedPointMapsToCanvasSize() {
+    let canvasSize = CanvasSize(width: 400, height: 200)
+
+    let point = CoordinateMapper.mapNormalizedPoint(
+        x: 0.5,
+        y: 0.25,
+        to: canvasSize
+    )
+
+    #expect(point == CanvasPoint(x: 200, y: 50))
 }
