@@ -50,7 +50,7 @@ struct DrawingCanvasView: View {
                             in: geometry.size
                         )
                         
-                        print(RemoteInputEvent.strokeMoved([point]))
+                        print(RemoteInputEvent.strokeEnded(point))
 
                         currentStroke = []
                     }
