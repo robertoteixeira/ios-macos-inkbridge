@@ -6,11 +6,26 @@
 //
 
 import SwiftUI
+import InkBridgeProtocol
 
 struct ContentView: View {
+    @State private var canvasResetID = UUID()
+    
     var body: some View {
-        DrawingCanvasView()
-            .ignoresSafeArea()
+        ZStack(alignment: .topTrailing) {
+            DrawingCanvasView()
+                .id(canvasResetID)
+                .ignoresSafeArea()
+            
+            Button {
+                print(RemoteInputEvent.clearCanvas)
+                canvasResetID = UUID()
+            } label: {
+                Label("Clear", systemImage: "trash")
+            }
+            .buttonStyle(.borderedProminent)
+            .padding()
+        }
     }
 }
 
