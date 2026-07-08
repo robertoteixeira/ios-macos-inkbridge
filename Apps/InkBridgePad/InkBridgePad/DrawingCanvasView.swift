@@ -9,7 +9,7 @@ import SwiftUI
 import InkBridgeProtocol
 
 struct DrawingCanvasView: View {
-    @State private var completedStrokes: [[CGPoint]] = []
+    @Binding var completedStrokes: [[CGPoint]]
     @State private var currentStroke: [CGPoint] = []
     
     var body: some View {
@@ -92,5 +92,5 @@ struct DrawingCanvasView: View {
 }
 
 #Preview {
-    DrawingCanvasView()
+    DrawingCanvasView(completedStrokes: .constant([]))
 }

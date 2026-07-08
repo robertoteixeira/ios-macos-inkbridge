@@ -9,21 +9,30 @@ import SwiftUI
 import InkBridgeProtocol
 
 struct ContentView: View {
-    @State private var canvasResetID = UUID()
+    @State private var completedStrokes: [[CGPoint]] = []
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            DrawingCanvasView()
-                .id(canvasResetID)
+            DrawingCanvasView(completedStrokes: $completedStrokes)
                 .ignoresSafeArea()
             
-            Button {
-                print(RemoteInputEvent.clearCanvas)
-                canvasResetID = UUID()
-            } label: {
-                Label("Clear", systemImage: "trash")
+            VStack(alignment: .trailing, spacing: 8) {
+                Text("\(completedStrokes.count) strokes")
+                    .font(.caption)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(.thinMaterial)
+                    .clipShape(Capsule())
+                
+                Button {
+                    print(RemoteInputEvent.clearCanvas)
+                    completedStrokes = []
+                } label: {
+                    Label("Clear", systemImage: "trash")
+                }
+                .buttonStyle(.borderedProminent)
             }
-            .buttonStyle(.borderedProminent)
+
             .padding()
         }
     }
