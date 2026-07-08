@@ -9,7 +9,7 @@ import SwiftUI
 import InkBridgeProtocol
 
 struct ContentView: View {
-    @State private var completedStrokes: [[CGPoint]] = []
+    @State private var completedStrokes: [InkStroke] = []
     
     var body: some View {
         ZStack(alignment: .topTrailing) {

@@ -9,14 +9,14 @@ import SwiftUI
 import InkBridgeProtocol
 
 struct DrawingCanvasView: View {
-    @Binding var completedStrokes: [[CGPoint]]
+    @Binding var completedStrokes: [InkStroke]
     @State private var currentStroke: [CGPoint] = []
     
     var body: some View {
         GeometryReader { geometry in
             Canvas { context, _ in
                 for stroke in completedStrokes {
-                    draw(stroke, in: context)
+                    draw(stroke.points, in: context)
                 }
                 draw(currentStroke, in: context)
             }
@@ -38,7 +38,12 @@ struct DrawingCanvasView: View {
                         currentStroke.append(value.location)
                     }
                     .onEnded { value in
-                        completedStrokes.append(currentStroke)
+                        completedStrokes.append(
+                            InkStroke(
+                                points: currentStroke,
+                                style: currentStyle
+                            )
+                        )
                         
                         let point = normalizedPoint(
                             from: value.location,
