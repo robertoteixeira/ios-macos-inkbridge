@@ -24,14 +24,18 @@ struct DrawingCanvasView: View {
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
-                        currentStroke.append(value.location)
-                        
                         let point = normalizedPoint(
                             from: value.location,
                             in: geometry.size
                         )
                         
-                        print(RemoteInputEvent.strokeMoved([point]))
+                        if currentStroke.isEmpty {
+                            print(RemoteInputEvent.strokeBegan(point, currentStyle))
+                        } else {
+                            print(RemoteInputEvent.strokeMoved([point]))
+                        }
+                        
+                        currentStroke.append(value.location)
                     }
                     .onEnded { value in
                         completedStrokes.append(currentStroke)
@@ -47,6 +51,15 @@ struct DrawingCanvasView: View {
                     }
             )
         }
+    }
+    
+    private var currentStyle: InkBridgeProtocol.StrokeStyle {
+        StrokeStyle(
+            colorHex: "#000000",
+            width: 4,
+            opacity: 1.0,
+            tool: .pen
+        )
     }
     
     private func draw(_ stroke: [CGPoint], in context: GraphicsContext) {
