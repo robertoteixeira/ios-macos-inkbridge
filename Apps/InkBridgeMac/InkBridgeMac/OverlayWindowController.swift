@@ -60,25 +60,35 @@ private struct OverlayDebugView: View {
     let viewModel: OverlayViewModel
     
     var body: some View {
-        Canvas { context, _ in
+        Canvas { context, size in
             for stroke in viewModel.strokes {
-                draw(stroke, in: context)
+                draw(stroke, in: context, size: size)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .allowsHitTesting(false)
     }
     
-    private func draw(_ stroke: OverlayStroke, in context: GraphicsContext) {
+    private func draw(_ stroke: OverlayStroke, in context: GraphicsContext, size: CGSize) {
         guard let firstPoint = stroke.points.first else {
             return
         }
         
         var path = Path()
-        path.move(to: firstPoint)
-        
+        path.move(
+            to: CGPoint(
+                x: firstPoint.x * size.width,
+                y: firstPoint.y * size.height
+            )
+        )
+
         for point in stroke.points.dropFirst() {
-            path.addLine(to: point)
+            path.addLine(
+                to: CGPoint(
+                    x: point.x * size.width,
+                    y: point.y * size.height
+                )
+            )
         }
         
         context.stroke(

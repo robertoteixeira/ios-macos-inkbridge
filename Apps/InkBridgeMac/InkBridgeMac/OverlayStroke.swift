@@ -11,12 +11,12 @@ import InkBridgeProtocol
 
 struct OverlayStroke: Identifiable, Equatable {
     let id: UUID
-    let points: [CGPoint]
+    let points: [StrokePoint]
     let style: InkBridgeProtocol.StrokeStyle
     
     init(
         id: UUID = UUID(),
-        points: [CGPoint],
+        points: [StrokePoint],
         style: InkBridgeProtocol.StrokeStyle
     ) {
         self.id = id

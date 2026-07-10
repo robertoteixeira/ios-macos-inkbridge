@@ -14,11 +14,11 @@ final class OverlayViewModel {
     var strokes: [OverlayStroke] = [
         OverlayStroke(
             points: [
-                CGPoint(x: 200, y: 200),
-                CGPoint(x: 260, y: 180),
-                CGPoint(x: 340, y: 220),
-                CGPoint(x: 420, y: 160),
-                CGPoint(x: 520, y: 240)
+                StrokePoint(x: 0.15, y: 0.30, pressure: 1.0, timestamp: 0),
+                StrokePoint(x: 0.25, y: 0.25, pressure: 1.0, timestamp: 0),
+                StrokePoint(x: 0.38, y: 0.34, pressure: 1.0, timestamp: 0),
+                StrokePoint(x: 0.50, y: 0.22, pressure: 1.0, timestamp: 0),
+                StrokePoint(x: 0.65, y: 0.40, pressure: 1.0, timestamp: 0)
             ],
             style: InkBridgeProtocol.StrokeStyle(
                 colorHex: "#FF0000",
