@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var isOverlayVisible = false
+    @State private var overlayWindowController = OverlayWindowController()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -20,6 +21,12 @@ struct ContentView: View {
 
             Button {
                 isOverlayVisible.toggle()
+                
+                if isOverlayVisible {
+                    overlayWindowController.showOverlay()
+                } else {
+                    overlayWindowController.hideOverlay()
+                }
             } label: {
                 Label(
                     isOverlayVisible ? "Hide Overlay" : "Show Overlay",
