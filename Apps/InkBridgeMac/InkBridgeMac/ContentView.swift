@@ -34,6 +34,13 @@ struct ContentView: View {
                 )
             }
             .buttonStyle(.borderedProminent)
+            
+            Button {
+                overlayWindowController.clearOverlay()
+            } label: {
+                Label("Clear Overlay", systemImage: "trash")
+            }
+            .disabled(!isOverlayVisible)
         }
         .padding()
         .frame(minWidth: 320, minHeight: 180)

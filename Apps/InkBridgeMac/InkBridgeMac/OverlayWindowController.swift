@@ -12,6 +12,8 @@ import InkBridgeProtocol
 final class OverlayWindowController {
     private var window: NSWindow?
     
+    let viewModel = OverlayViewModel()
+    
     func showOverlay() {
         if let window {
             window.makeKeyAndOrderFront(nil)
@@ -37,7 +39,7 @@ final class OverlayWindowController {
         ]
         
         window.contentView = NSHostingView(
-            rootView: OverlayDebugView()
+            rootView: OverlayDebugView(viewModel: viewModel)
         )
         
         window.makeKeyAndOrderFront(nil)
@@ -48,30 +50,18 @@ final class OverlayWindowController {
     func hideOverlay() {
         window?.orderOut(nil)
     }
+    
+    func clearOverlay() {
+        viewModel.clear()
+    }
 }
 
 private struct OverlayDebugView: View {
-    private let sampleStrokes: [OverlayStroke] = [
-        OverlayStroke(
-            points: [
-                CGPoint(x: 200, y: 200),
-                CGPoint(x: 260, y: 180),
-                CGPoint(x: 340, y: 220),
-                CGPoint(x: 420, y: 160),
-                CGPoint(x: 520, y: 240)
-            ],
-            style: InkBridgeProtocol.StrokeStyle(
-                colorHex: "#FF0000",
-                width: 8,
-                opacity: 1.0,
-                tool: .pen
-            )
-        )
-    ]
+    let viewModel: OverlayViewModel
     
     var body: some View {
         Canvas { context, _ in
-            for stroke in sampleStrokes {
+            for stroke in viewModel.strokes {
                 draw(stroke, in: context)
             }
         }
