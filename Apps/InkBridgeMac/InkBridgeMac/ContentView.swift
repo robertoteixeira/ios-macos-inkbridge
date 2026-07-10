@@ -8,14 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isOverlayVisible = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(alignment: .leading, spacing: 16) {
+            Text("InkBridge Mac")
+                .font(.title)
+
+            Text(isOverlayVisible ? "Overlay visible" : "Overlay hidden")
+                .foregroundStyle(.secondary)
+
+            Button {
+                isOverlayVisible.toggle()
+            } label: {
+                Label(
+                    isOverlayVisible ? "Hide Overlay" : "Show Overlay",
+                    systemImage: isOverlayVisible ? "eye.slash" : "eye"
+                )
+            }
+            .buttonStyle(.borderedProminent)
         }
         .padding()
+        .frame(minWidth: 320, minHeight: 180)
     }
 }
 
