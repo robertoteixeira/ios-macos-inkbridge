@@ -7,6 +7,7 @@
 
 import AppKit
 import SwiftUI
+import InkBridgeProtocol
 
 final class OverlayWindowController {
     private var window: NSWindow?
@@ -50,15 +51,50 @@ final class OverlayWindowController {
 }
 
 private struct OverlayDebugView: View {
+    private let sampleStrokes: [OverlayStroke] = [
+        OverlayStroke(
+            points: [
+                CGPoint(x: 200, y: 200),
+                CGPoint(x: 260, y: 180),
+                CGPoint(x: 340, y: 220),
+                CGPoint(x: 420, y: 160),
+                CGPoint(x: 520, y: 240)
+            ],
+            style: InkBridgeProtocol.StrokeStyle(
+                colorHex: "#FF0000",
+                width: 8,
+                opacity: 1.0,
+                tool: .pen
+            )
+        )
+    ]
+    
     var body: some View {
-        ZStack {
-            Color.clear
-            
-            Text("Overlay")
-                .font(.largeTitle)
-                .foregroundStyle(.red)
-                .padding()
+        Canvas { context, _ in
+            for stroke in sampleStrokes {
+                draw(stroke, in: context)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .allowsHitTesting(false)
+    }
+    
+    private func draw(_ stroke: OverlayStroke, in context: GraphicsContext) {
+        guard let firstPoint = stroke.points.first else {
+            return
+        }
+        
+        var path = Path()
+        path.move(to: firstPoint)
+        
+        for point in stroke.points.dropFirst() {
+            path.addLine(to: point)
+        }
+        
+        context.stroke(
+            path,
+            with: .color(.red.opacity(stroke.style.opacity)),
+            lineWidth: stroke.style.width
+        )
     }
 }
