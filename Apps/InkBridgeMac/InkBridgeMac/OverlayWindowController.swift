@@ -47,6 +47,10 @@ final class OverlayWindowController {
         self.window = window
     }
     
+    func handle(_ event: RemoteInputEvent) {
+        viewModel.handle(event)
+    }
+    
     func hideOverlay() {
         window?.orderOut(nil)
     }
@@ -63,6 +67,10 @@ private struct OverlayDebugView: View {
         Canvas { context, size in
             for stroke in viewModel.strokes {
                 draw(stroke, in: context, size: size)
+            }
+            
+            if let activeStroke = viewModel.activeStroke {
+                draw(activeStroke, in: context, size: size)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
