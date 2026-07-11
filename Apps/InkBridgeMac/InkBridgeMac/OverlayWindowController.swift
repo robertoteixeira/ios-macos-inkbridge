@@ -101,8 +101,35 @@ private struct OverlayDebugView: View {
         
         context.stroke(
             path,
-            with: .color(.red.opacity(stroke.style.opacity)),
+            with: .color(
+                color(
+                    from: stroke.style.colorHex,
+                    opacity: stroke.style.opacity
+                )
+            ),
             lineWidth: stroke.style.width
+        )
+    }
+    
+    private func color(from hex: String, opacity: Double) -> Color {
+        let trimmedHex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
+        
+        guard
+            trimmedHex.count == 6,
+            let value = Int(trimmedHex, radix: 16)
+        else {
+            return .red.opacity(opacity)
+        }
+        
+        let red = Double((value >> 16) & 0xFF) / 255.0
+        let green = Double((value >> 8) & 0xFF) / 255.0
+        let blue = Double(value & 0xFF) / 255.0
+        
+        return Color(
+            red: red,
+            green: green,
+            blue: blue,
+            opacity: opacity
         )
     }
 }
