@@ -13,8 +13,11 @@ struct ContentView: View {
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            DrawingCanvasView(completedStrokes: $completedStrokes)
-                .ignoresSafeArea()
+            DrawingCanvasView(
+                completedStrokes: $completedStrokes,
+                onRemoteInputEvent: handleRemoteInputEvent
+            )
+            .ignoresSafeArea()
             
             VStack(alignment: .trailing, spacing: 8) {
                 Text("\(completedStrokes.count) strokes")
@@ -35,6 +38,10 @@ struct ContentView: View {
 
             .padding()
         }
+    }
+    
+    private func handleRemoteInputEvent(_ event: RemoteInputEvent) {
+        print(event)
     }
 }
 

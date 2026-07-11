@@ -12,6 +12,8 @@ struct DrawingCanvasView: View {
     @Binding var completedStrokes: [InkStroke]
     @State private var currentStroke: [CGPoint] = []
     
+    let onRemoteInputEvent: (RemoteInputEvent) -> Void
+    
     var body: some View {
         GeometryReader { geometry in
             Canvas { context, _ in
@@ -30,9 +32,9 @@ struct DrawingCanvasView: View {
                         )
                         
                         if currentStroke.isEmpty {
-                            print(RemoteInputEvent.strokeBegan(point, currentStyle))
+                            onRemoteInputEvent(.strokeBegan(point, currentStyle))
                         } else {
-                            print(RemoteInputEvent.strokeMoved([point]))
+                            onRemoteInputEvent(.strokeMoved([point]))
                         }
                         
                         currentStroke.append(value.location)
@@ -50,7 +52,7 @@ struct DrawingCanvasView: View {
                             in: geometry.size
                         )
                         
-                        print(RemoteInputEvent.strokeEnded(point))
+                        onRemoteInputEvent(.strokeEnded(point))
 
                         currentStroke = []
                     }
@@ -97,5 +99,8 @@ struct DrawingCanvasView: View {
 }
 
 #Preview {
-    DrawingCanvasView(completedStrokes: .constant([]))
+    DrawingCanvasView(
+        completedStrokes: .constant([]),
+        onRemoteInputEvent: { _ in }
+    )
 }
