@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import InkBridgeProtocol
 
 struct ContentView: View {
     @State private var isOverlayVisible = false
@@ -43,44 +42,15 @@ struct ContentView: View {
             }
             .disabled(!isOverlayVisible)
             
-            sampleButton
+            Button {
+                overlayWindowController.addSampleStroke()
+            } label: {
+                Label("Add Test Stroke", systemImage: "scribble")
+            }
+            .disabled(!isOverlayVisible)
         }
         .padding()
         .frame(minWidth: 320, minHeight: 180)
-    }
-    
-    private var sampleButton: some View {
-        Button {
-            let style = InkBridgeProtocol.StrokeStyle(
-                colorHex: "#FF0000",
-                width: 8,
-                opacity: 1.0,
-                tool: .pen
-            )
-            
-            overlayWindowController.handle(
-                .strokeBegan(
-                    StrokePoint(x: 0.20, y: 0.30, pressure: 1.0, timestamp: 0),
-                    style
-                )
-            )
-            
-            overlayWindowController.handle(
-                .strokeMoved([
-                    StrokePoint(x: 0.35, y: 0.25, pressure: 1.0, timestamp: 0),
-                    StrokePoint(x: 0.50, y: 0.38, pressure: 1.0, timestamp: 0),
-                ])
-            )
-            
-            overlayWindowController.handle(
-                .strokeEnded(
-                    StrokePoint(x: 0.70, y: 0.28, pressure: 1.0, timestamp: 0)
-                )
-            )
-        } label: {
-            Label("Add Sample Stroke", systemImage: "scribble")
-        }
-        .disabled(!isOverlayVisible)
     }
 }
 
