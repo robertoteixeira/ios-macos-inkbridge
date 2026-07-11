@@ -26,7 +26,7 @@ struct DrawingCanvasView: View {
             .gesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
-                        let point = normalizedPoint(
+                        let point = DrawingInputMapper.normalizedPoint(
                             from: value.location,
                             in: geometry.size
                         )
@@ -47,7 +47,7 @@ struct DrawingCanvasView: View {
                             )
                         )
                         
-                        let point = normalizedPoint(
+                        let point = DrawingInputMapper.normalizedPoint(
                             from: value.location,
                             in: geometry.size
                         )
@@ -85,15 +85,6 @@ struct DrawingCanvasView: View {
             path,
             with: .color(.black),
             lineWidth: 4
-        )
-    }
-    
-    private func normalizedPoint(from location: CGPoint, in size: CGSize) -> StrokePoint {
-        StrokePoint(
-            x: location.x / size.width,
-            y: location.y / size.height,
-            pressure: 1.0,
-            timestamp: Date().timeIntervalSince1970
         )
     }
 }
