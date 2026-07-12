@@ -34,6 +34,13 @@ struct ContentView: View {
                     .background(.thinMaterial)
                     .clipShape(Capsule())
                 
+                Text("\(undoneStrokes.count) redo")
+                    .font(.caption)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(.thinMaterial)
+                    .clipShape(Capsule())
+                
                 Button {
                     completedStrokes = []
                     undoneStrokes = []
@@ -51,7 +58,7 @@ struct ContentView: View {
                     undoneStrokes.append(stroke)
                     handleRemoteInputEvent(.undo)
                 } label: {
-                    Label("Undo", systemImage: "arrow.turn.backward")
+                    Label("Undo", systemImage: "arrow.uturn.backward")
                 }
                 .disabled(completedStrokes.isEmpty)
                 
@@ -63,7 +70,7 @@ struct ContentView: View {
                     completedStrokes.append(stroke)
                     handleRemoteInputEvent(.undo)
                 } label: {
-                    Label("Undo", systemImage: "arrow.turn.forward")
+                    Label("Redo", systemImage: "arrow.uturn.forward")
                 }
                 .disabled(undoneStrokes.isEmpty)
             }
