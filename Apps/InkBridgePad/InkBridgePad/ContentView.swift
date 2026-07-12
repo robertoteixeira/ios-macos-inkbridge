@@ -10,12 +10,19 @@ import InkBridgeProtocol
 
 struct ContentView: View {
     @State private var completedStrokes: [InkStroke] = []
+    @State private var undoneStrokes: [InkStroke] = []
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             DrawingCanvasView(
                 completedStrokes: $completedStrokes,
-                onRemoteInputEvent: handleRemoteInputEvent
+                onRemoteInputEvent:  { event in
+                    if case .strokeBegan = event {
+                        undoneStrokes = []
+                    }
+                            
+                    handleRemoteInputEvent(event)
+                }
             )
             .ignoresSafeArea()
             
@@ -29,6 +36,7 @@ struct ContentView: View {
                 
                 Button {
                     completedStrokes = []
+                    undoneStrokes = []
                     handleRemoteInputEvent(.clearCanvas)
                 } label: {
                     Label("Clear", systemImage: "trash")
@@ -36,16 +44,28 @@ struct ContentView: View {
                 .buttonStyle(.borderedProminent)
                 
                 Button {
-                    guard !completedStrokes.isEmpty else {
+                    guard let stroke = completedStrokes.popLast() else {
                         return
                     }
                     
-                    completedStrokes.removeLast()
+                    undoneStrokes.append(stroke)
                     handleRemoteInputEvent(.undo)
                 } label: {
                     Label("Undo", systemImage: "arrow.turn.backward")
                 }
                 .disabled(completedStrokes.isEmpty)
+                
+                Button {
+                    guard let stroke = undoneStrokes.popLast() else {
+                        return
+                    }
+                    
+                    completedStrokes.append(stroke)
+                    handleRemoteInputEvent(.undo)
+                } label: {
+                    Label("Undo", systemImage: "arrow.turn.forward")
+                }
+                .disabled(undoneStrokes.isEmpty)
             }
 
             .padding()
