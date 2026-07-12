@@ -28,12 +28,24 @@ struct ContentView: View {
                     .clipShape(Capsule())
                 
                 Button {
-                    print(RemoteInputEvent.clearCanvas)
                     completedStrokes = []
+                    handleRemoteInputEvent(.clearCanvas)
                 } label: {
                     Label("Clear", systemImage: "trash")
                 }
                 .buttonStyle(.borderedProminent)
+                
+                Button {
+                    guard !completedStrokes.isEmpty else {
+                        return
+                    }
+                    
+                    completedStrokes.removeLast()
+                    handleRemoteInputEvent(.undo)
+                } label: {
+                    Label("Undo", systemImage: "arrow.turn.backward")
+                }
+                .disabled(completedStrokes.isEmpty)
             }
 
             .padding()
