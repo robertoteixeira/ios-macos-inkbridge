@@ -41,6 +41,34 @@ struct ContentView: View {
                     .background(.thinMaterial)
                     .clipShape(Capsule())
                 
+                HStack(spacing: 8) {
+                    Button {
+                        guard let stroke = completedStrokes.popLast() else {
+                            return
+                        }
+                        
+                        undoneStrokes.append(stroke)
+                        handleRemoteInputEvent(.undo)
+                    } label: {
+                        Image(systemName: "arrow.uturn.backward")
+                    }
+                    .accessibilityLabel("Undo")
+                    .disabled(completedStrokes.isEmpty)
+                    
+                    Button {
+                        guard let stroke = undoneStrokes.popLast() else {
+                            return
+                        }
+                        
+                        completedStrokes.append(stroke)
+                        handleRemoteInputEvent(.redo)
+                    } label: {
+                        Image(systemName: "arrow.uturn.forward")
+                    }
+                    .accessibilityLabel("Redo")
+                    .disabled(undoneStrokes.isEmpty)
+                }
+                
                 Button {
                     completedStrokes = []
                     undoneStrokes = []
@@ -49,30 +77,6 @@ struct ContentView: View {
                     Label("Clear", systemImage: "trash")
                 }
                 .buttonStyle(.borderedProminent)
-                
-                Button {
-                    guard let stroke = completedStrokes.popLast() else {
-                        return
-                    }
-                    
-                    undoneStrokes.append(stroke)
-                    handleRemoteInputEvent(.undo)
-                } label: {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
-                }
-                .disabled(completedStrokes.isEmpty)
-                
-                Button {
-                    guard let stroke = undoneStrokes.popLast() else {
-                        return
-                    }
-                    
-                    completedStrokes.append(stroke)
-                    handleRemoteInputEvent(.undo)
-                } label: {
-                    Label("Redo", systemImage: "arrow.uturn.forward")
-                }
-                .disabled(undoneStrokes.isEmpty)
             }
 
             .padding()
