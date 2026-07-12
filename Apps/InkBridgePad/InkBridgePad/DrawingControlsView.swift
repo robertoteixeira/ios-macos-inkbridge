@@ -53,3 +53,29 @@ struct DrawingControlsView: View {
         }
     }
 }
+
+#Preview("Enabled") {
+    DrawingControlsView(
+        completedStrokeCount: 3,
+        undoneStrokeCount: 1,
+        canUndo: true,
+        canRedo: true,
+        onUndo: {},
+        onRedo: {},
+        onClear: {}
+    )
+    .padding()
+}
+
+#Preview("Empty") {
+    DrawingControlsView(
+        completedStrokeCount: 0,
+        undoneStrokeCount: 0,
+        canUndo: false,
+        canRedo: false,
+        onUndo: {},
+        onRedo: {},
+        onClear: {}
+    )
+    .padding()
+}
