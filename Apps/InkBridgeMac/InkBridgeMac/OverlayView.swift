@@ -7,6 +7,7 @@
 
 import SwiftUI
 import InkBridgeProtocol
+import InkBridgeRendering
 
 struct OverlayView: View {
     let viewModel: OverlayViewModel
@@ -55,13 +56,9 @@ struct OverlayView: View {
 
     private func mappedPoint(_ point: StrokePoint, in size: CGSize) -> CGPoint {
         CGPoint(
-            x: clamped(point.x) * size.width,
-            y: clamped(point.y) * size.height
+            x: NormalizedCoordinate.clamped(point.x) * size.width,
+            y: NormalizedCoordinate.clamped(point.y) * size.height
         )
-    }
-    
-    private func clamped(_ value: Double) -> Double {
-        min(max(value, 0), 1)
     }
 
     private func color(from hex: String, opacity: Double) -> Color {

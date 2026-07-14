@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0322EC663006CB090016457D /* InkBridgeRendering in Frameworks */ = {isa = PBXBuildFile; productRef = 0322EC653006CB090016457D /* InkBridgeRendering */; };
 		034262AA2FFD8F930049360B /* InkBridgeProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 034262A92FFD8F930049360B /* InkBridgeProtocol */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				034262AA2FFD8F930049360B /* InkBridgeProtocol in Frameworks */,
+				0322EC663006CB090016457D /* InkBridgeRendering in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +120,7 @@
 			name = InkBridgeMac;
 			packageProductDependencies = (
 				034262A92FFD8F930049360B /* InkBridgeProtocol */,
+				0322EC653006CB090016457D /* InkBridgeRendering */,
 			);
 			productName = InkBridgeMac;
 			productReference = 034A9A672FFBF04B0087A380 /* InkBridgeMac.app */;
@@ -203,6 +206,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				034262A82FFD8F930049360B /* XCLocalSwiftPackageReference "../../Packages/InkBridgeProtocol" */,
+				0322EC643006CB090016457D /* XCLocalSwiftPackageReference "../../Packages/InkBridgeRendering" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 034A9A682FFBF04B0087A380 /* Products */;
@@ -586,6 +590,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		0322EC643006CB090016457D /* XCLocalSwiftPackageReference "../../Packages/InkBridgeRendering" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../Packages/InkBridgeRendering;
+		};
 		034262A82FFD8F930049360B /* XCLocalSwiftPackageReference "../../Packages/InkBridgeProtocol" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../Packages/InkBridgeProtocol;
@@ -593,6 +601,10 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0322EC653006CB090016457D /* InkBridgeRendering */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InkBridgeRendering;
+		};
 		034262A92FFD8F930049360B /* InkBridgeProtocol */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = InkBridgeProtocol;

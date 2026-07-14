@@ -8,6 +8,7 @@
 import CoreGraphics
 import Foundation
 import InkBridgeProtocol
+import InkBridgeRendering
 
 enum DrawingInputMapper {
     static func normalizedPoint(
@@ -26,14 +27,10 @@ enum DrawingInputMapper {
         }
 
         return StrokePoint(
-            x: clamped(location.x / size.width),
-            y: clamped(location.y / size.height),
+            x: NormalizedCoordinate.clamped(location.x / size.width),
+            y: NormalizedCoordinate.clamped(location.y / size.height),
             pressure: pressure,
             timestamp: timestamp
         )
-    }
-    
-    private static func clamped(_ value: Double) -> Double {
-        min(max(value, 0), 1)
     }
 }
