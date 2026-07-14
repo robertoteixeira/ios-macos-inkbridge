@@ -18,3 +18,18 @@ import Testing
     #expect(NormalizedCoordinate.clamped(0.5) == 0.5)
     #expect(NormalizedCoordinate.clamped(1.25) == 1)
 }
+
+@Test func hexColorParserParsesSixDigitRGB() {
+    let color = HexColorParser.parse("#00AAFF")
+
+    #expect(color == RGBColor(
+        red: 0,
+        green: 170.0 / 255.0,
+        blue: 1
+    ))
+}
+
+@Test func hexColorParserRejectsInvalidHex() {
+    #expect(HexColorParser.parse("not-a-color") == nil)
+    #expect(HexColorParser.parse("#FFF") == nil)
+}
