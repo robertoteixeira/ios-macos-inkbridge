@@ -37,3 +37,15 @@ import InkBridgeProtocol
     #expect(point.pressure == 0.5)
     #expect(point.timestamp == 456)
 }
+
+@Test func normalizedPointClampsLocationIntoUnitSpace() {
+    let point = DrawingInputMapper.normalizedPoint(
+        from: CGPoint(x: 500, y: -50),
+        in: CGSize(width: 400, height: 200),
+        pressure: 1.0,
+        timestamp: 789
+    )
+
+    #expect(point.x == 1)
+    #expect(point.y == 0)
+}

@@ -26,10 +26,14 @@ enum DrawingInputMapper {
         }
 
         return StrokePoint(
-            x: location.x / size.width,
-            y: location.y / size.height,
+            x: clamped(location.x / size.width),
+            y: clamped(location.y / size.height),
             pressure: pressure,
             timestamp: timestamp
         )
+    }
+    
+    private static func clamped(_ value: Double) -> Double {
+        min(max(value, 0), 1)
     }
 }
