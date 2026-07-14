@@ -55,9 +55,18 @@ struct OverlayView: View {
     }
 
     private func mappedPoint(_ point: StrokePoint, in size: CGSize) -> CGPoint {
-        CGPoint(
-            x: NormalizedCoordinate.clamped(point.x) * size.width,
-            y: NormalizedCoordinate.clamped(point.y) * size.height
+        let mappedPoint = CoordinateMapper.mapNormalizedPoint(
+            x: NormalizedCoordinate.clamped(point.x),
+            y: NormalizedCoordinate.clamped(point.y),
+            to: CanvasSize(
+                width: size.width,
+                height: size.height
+            )
+        )
+
+        return CGPoint(
+            x: mappedPoint.x,
+            y: mappedPoint.y
         )
     }
 
