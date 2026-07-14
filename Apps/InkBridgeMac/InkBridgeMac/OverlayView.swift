@@ -55,9 +55,13 @@ struct OverlayView: View {
 
     private func mappedPoint(_ point: StrokePoint, in size: CGSize) -> CGPoint {
         CGPoint(
-            x: point.x * size.width,
-            y: point.y * size.height
+            x: clamped(point.x) * size.width,
+            y: clamped(point.y) * size.height
         )
+    }
+    
+    private func clamped(_ value: Double) -> Double {
+        min(max(value, 0), 1)
     }
 
     private func color(from hex: String, opacity: Double) -> Color {
