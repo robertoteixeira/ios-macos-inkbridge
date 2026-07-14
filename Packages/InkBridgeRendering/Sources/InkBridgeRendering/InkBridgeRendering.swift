@@ -32,3 +32,9 @@ public enum CoordinateMapper {
         )
     }
 }
+
+public enum NormalizedCoordinate {
+    public static func clamped(_ value: Double) -> Double {
+        min(max(value, 0), 1)
+    }
+}

@@ -12,3 +12,9 @@ import Testing
 
     #expect(point == CanvasPoint(x: 200, y: 50))
 }
+
+@Test func normalizedCoordinateClampsIntoUnitRange() {
+    #expect(NormalizedCoordinate.clamped(-0.25) == 0)
+    #expect(NormalizedCoordinate.clamped(0.5) == 0.5)
+    #expect(NormalizedCoordinate.clamped(1.25) == 1)
+}
