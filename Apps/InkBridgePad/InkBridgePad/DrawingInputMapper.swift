@@ -16,7 +16,16 @@ enum DrawingInputMapper {
         pressure: Double = 1.0,
         timestamp: TimeInterval = Date().timeIntervalSince1970
     ) -> StrokePoint {
-        StrokePoint(
+        guard size.width > 0, size.height > 0 else {
+            return StrokePoint(
+                x: 0,
+                y: 0,
+                pressure: pressure,
+                timestamp: timestamp
+            )
+        }
+
+        return StrokePoint(
             x: location.x / size.width,
             y: location.y / size.height,
             pressure: pressure,

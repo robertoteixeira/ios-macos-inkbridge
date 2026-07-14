@@ -23,3 +23,17 @@ import InkBridgeProtocol
     #expect(point.pressure == 0.75)
     #expect(point.timestamp == 123)
 }
+
+@Test func normalizedPointHandlesZeroCanvasSize() {
+    let point = DrawingInputMapper.normalizedPoint(
+        from: CGPoint(x: 200, y: 50),
+        in: .zero,
+        pressure: 0.5,
+        timestamp: 456
+    )
+
+    #expect(point.x == 0)
+    #expect(point.y == 0)
+    #expect(point.pressure == 0.5)
+    #expect(point.timestamp == 456)
+}
