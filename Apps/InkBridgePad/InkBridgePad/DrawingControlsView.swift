@@ -15,6 +15,7 @@ struct DrawingControlsView: View {
     let onUndo: () -> Void
     let onRedo: () -> Void
     let onClear: () -> Void
+    let recentEvents: [String]
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
@@ -45,6 +46,18 @@ struct DrawingControlsView: View {
                 .accessibilityLabel("Redo")
                 .disabled(!canRedo)
             }
+            
+            VStack(alignment: .trailing, spacing: 4) {
+                ForEach(recentEvents, id: \.self) { event in
+                    Text(event)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(.thinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
 
             Button(action: onClear) {
                 Label("Clear", systemImage: "trash")
@@ -62,7 +75,8 @@ struct DrawingControlsView: View {
         canRedo: true,
         onUndo: {},
         onRedo: {},
-        onClear: {}
+        onClear: {},
+        recentEvents: ["strokeEnded", "strokeMoved", "strokeBegan"]
     )
     .padding()
 }
@@ -75,7 +89,8 @@ struct DrawingControlsView: View {
         canRedo: false,
         onUndo: {},
         onRedo: {},
-        onClear: {}
+        onClear: {},
+        recentEvents: []
     )
     .padding()
 }
