@@ -71,19 +71,15 @@ struct OverlayView: View {
     }
 
     private func color(from hex: String, opacity: Double) -> Color {
-        let trimmedHex = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
-
-        guard
-            trimmedHex.count == 6,
-            let value = Int(trimmedHex, radix: 16)
-        else {
+        guard let rgbColor = HexColorParser.parse(hex) else {
             return .red.opacity(opacity)
         }
 
-        let red = Double((value >> 16) & 0xFF) / 255.0
-        let green = Double((value >> 8) & 0xFF) / 255.0
-        let blue = Double(value & 0xFF) / 255.0
-
-        return Color(red: red, green: green, blue: blue, opacity: opacity)
+        return Color(
+            red: rgbColor.red,
+            green: rgbColor.green,
+            blue: rgbColor.blue,
+            opacity: opacity
+        )
     }
 }
