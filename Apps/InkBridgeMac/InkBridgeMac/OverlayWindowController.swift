@@ -55,13 +55,21 @@ final class OverlayWindowController {
         window?.orderOut(nil)
     }
     
-    func clear() {
-        handle(.clearCanvas)
-    }
-    
     func addTestStroke() {
         for event in SampleOverlayEvents.strokeEvents() {
             handle(event)
         }
+    }
+    
+    func clear() {
+        handle(.clearCanvas)
+    }
+    
+    func undo() {
+        handle(.undo)
+    }
+
+    func redo() {
+        handle(.redo)
     }
 }

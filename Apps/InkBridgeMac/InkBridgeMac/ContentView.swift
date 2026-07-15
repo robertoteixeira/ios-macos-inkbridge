@@ -18,6 +18,12 @@ struct ContentView: View {
             onClearOverlay: {
                 overlayWindowController.clear()
             },
+            onUndo: {
+                overlayWindowController.undo()
+            },
+            onRedo: {
+                overlayWindowController.redo()
+            },
             onAddTestStroke: {
                 overlayWindowController.addTestStroke()
             }

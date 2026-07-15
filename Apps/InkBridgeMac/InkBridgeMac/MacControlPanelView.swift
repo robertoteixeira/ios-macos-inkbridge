@@ -11,6 +11,8 @@ struct MacControlPanelView: View {
     let isOverlayVisible: Bool
     let onToggleOverlay: () -> Void
     let onClearOverlay: () -> Void
+    let onUndo: () -> Void
+    let onRedo: () -> Void
     let onAddTestStroke: () -> Void
 
     var body: some View {
@@ -35,6 +37,20 @@ struct MacControlPanelView: View {
             }
             .disabled(!isOverlayVisible)
             .accessibilityLabel("Clear overlay")
+            
+            HStack(spacing: 8) {
+                Button(action: onUndo) {
+                    Image(systemName: "arrow.uturn.backward")
+                }
+                .accessibilityLabel("Undo overlay stroke")
+                .disabled(!isOverlayVisible)
+
+                Button(action: onRedo) {
+                    Image(systemName: "arrow.uturn.forward")
+                }
+                .accessibilityLabel("Redo overlay stroke")
+                .disabled(!isOverlayVisible)
+            }
 
             Button(action: onAddTestStroke) {
                 Label("Add Test Stroke", systemImage: "scribble.variable")
@@ -54,6 +70,8 @@ struct MacControlPanelView: View {
         isOverlayVisible: true,
         onToggleOverlay: {},
         onClearOverlay: {},
+        onUndo: {},
+        onRedo: {},
         onAddTestStroke: {}
     )
     .padding()
@@ -64,7 +82,9 @@ struct MacControlPanelView: View {
         isOverlayVisible: false,
         onToggleOverlay: {},
         onClearOverlay: {},
-        onAddTestStroke: {}
+        onUndo: {},
+        onRedo: {},
+        onAddTestStroke: {},
     )
     .padding()
 }
