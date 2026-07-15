@@ -72,7 +72,7 @@ import InkBridgeProtocol
     #expect(viewModel.activeStroke == nil)
 }
 
-@Test func handleUnsupportedEventsDoesNotChangeStrokeState() {
+@Test func handleEmptyUndoRedoAndModeChangedDoesNotChangeStrokeState() {
     let viewModel = OverlayViewModel()
 
     viewModel.handle(.undo)
