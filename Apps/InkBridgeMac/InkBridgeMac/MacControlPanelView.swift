@@ -28,16 +28,19 @@ struct MacControlPanelView: View {
                 )
             }
             .buttonStyle(.borderedProminent)
+            .accessibilityLabel(isOverlayVisible ? "Hide overlay" : "Show overlay")
 
             Button(action: onClearOverlay) {
                 Label("Clear Overlay", systemImage: "trash")
             }
             .disabled(!isOverlayVisible)
+            .accessibilityLabel("Clear overlay")
 
             Button(action: onAddTestStroke) {
                 Label("Add Test Stroke", systemImage: "scribble.variable")
             }
             .disabled(!isOverlayVisible)
+            .accessibilityLabel("Add test stroke")
 
             Text("Local test event")
                 .font(.caption)
