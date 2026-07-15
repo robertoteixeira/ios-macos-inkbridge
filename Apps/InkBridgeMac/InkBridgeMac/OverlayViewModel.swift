@@ -12,6 +12,7 @@ import InkBridgeProtocol
 @Observable
 final class OverlayViewModel {
     private var currentStroke: OverlayStroke?
+    private var undoneStrokes: [OverlayStroke] = []
     
     var strokes: [OverlayStroke] = []
     
@@ -22,6 +23,7 @@ final class OverlayViewModel {
     func handle(_ event: RemoteInputEvent) {
         switch event {
         case let .strokeBegan(point, style):
+            undoneStrokes = []
             currentStroke = OverlayStroke(
                 points: [point],
                 style: style
@@ -58,12 +60,36 @@ final class OverlayViewModel {
         case .clearCanvas:
             clear()
             
-        case .undo, .redo, .modeChanged:
+        case .undo:
+            undo()
+            
+        case .redo:
+            redo()
+            
+        case .modeChanged:
             break
         }
     }
     
     func clear() {
         strokes = []
+        undoneStrokes = []
+        currentStroke = nil
+    }
+    
+    func undo() {
+        guard let stroke = strokes.popLast() else {
+            return
+        }
+
+        undoneStrokes.append(stroke)
+    }
+
+    func redo() {
+        guard let stroke = undoneStrokes.popLast() else {
+            return
+        }
+
+        strokes.append(stroke)
     }
 }

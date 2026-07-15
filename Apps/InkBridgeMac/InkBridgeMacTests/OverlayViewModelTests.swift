@@ -82,3 +82,25 @@ import InkBridgeProtocol
     #expect(viewModel.strokes.isEmpty)
     #expect(viewModel.activeStroke == nil)
 }
+
+@Test func handleUndoAndRedoUpdatesCompletedStrokes() {
+    let viewModel = OverlayViewModel()
+
+    let style = InkBridgeProtocol.StrokeStyle(
+        colorHex: "#00AAFF",
+        width: 8,
+        opacity: 1.0,
+        tool: .pen
+    )
+
+    viewModel.handle(.strokeBegan(StrokePoint(x: 0.1, y: 0.2, pressure: 1.0, timestamp: 1), style))
+    viewModel.handle(.strokeEnded(StrokePoint(x: 0.3, y: 0.4, pressure: 1.0, timestamp: 2)))
+
+    #expect(viewModel.strokes.count == 1)
+
+    viewModel.handle(.undo)
+    #expect(viewModel.strokes.isEmpty)
+
+    viewModel.handle(.redo)
+    #expect(viewModel.strokes.count == 1)
+}
