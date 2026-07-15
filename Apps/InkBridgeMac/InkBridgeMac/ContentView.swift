@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import InkBridgeProtocol
 
 struct ContentView: View {
     @State private var isOverlayVisible = false

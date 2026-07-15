@@ -55,10 +55,6 @@ final class OverlayWindowController {
         window?.orderOut(nil)
     }
     
-    func clearOverlay() {
-        viewModel.clear()
-    }
-    
     func addSampleStroke() {
         let style = InkBridgeProtocol.StrokeStyle(
             colorHex: "#00AAFF",
