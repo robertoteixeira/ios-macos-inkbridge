@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import InkBridgeProtocol
 
 struct ContentView: View {
     @State private var isOverlayVisible = false
@@ -17,7 +16,7 @@ struct ContentView: View {
             isOverlayVisible: isOverlayVisible,
             onToggleOverlay: toggleOverlay,
             onClearOverlay: {
-                overlayWindowController.handle(.clearCanvas)
+                overlayWindowController.clear()
             },
             onAddTestStroke: {
                 overlayWindowController.addSampleStroke()
