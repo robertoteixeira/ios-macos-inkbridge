@@ -46,9 +46,13 @@ struct ContentView: View {
             Button {
                 overlayWindowController.addSampleStroke()
             } label: {
-                Label("Add Test Stroke", systemImage: "scribble")
+                Label("Add Test Stroke", systemImage: "scribble.variable")
             }
             .disabled(!isOverlayVisible)
+            
+            Text("Local test event")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
         .padding()
         .frame(minWidth: 320, minHeight: 180)
