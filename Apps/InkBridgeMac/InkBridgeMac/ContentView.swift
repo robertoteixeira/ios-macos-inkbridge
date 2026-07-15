@@ -19,7 +19,7 @@ struct ContentView: View {
                 overlayWindowController.clear()
             },
             onAddTestStroke: {
-                overlayWindowController.addSampleStroke()
+                overlayWindowController.addTestStroke()
             }
         )
         .padding()
