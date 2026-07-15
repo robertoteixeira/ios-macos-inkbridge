@@ -13,49 +13,28 @@ struct ContentView: View {
     @State private var overlayWindowController = OverlayWindowController()
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("InkBridge Mac")
-                .font(.title)
-
-            Text(isOverlayVisible ? "Overlay visible" : "Overlay hidden")
-                .foregroundStyle(.secondary)
-
-            Button {
-                isOverlayVisible.toggle()
-                
-                if isOverlayVisible {
-                    overlayWindowController.showOverlay()
-                } else {
-                    overlayWindowController.hideOverlay()
-                }
-            } label: {
-                Label(
-                    isOverlayVisible ? "Hide Overlay" : "Show Overlay",
-                    systemImage: isOverlayVisible ? "eye.slash" : "eye"
-                )
-            }
-            .buttonStyle(.borderedProminent)
-            
-            Button {
+        MacControlPanelView(
+            isOverlayVisible: isOverlayVisible,
+            onToggleOverlay: toggleOverlay,
+            onClearOverlay: {
                 overlayWindowController.handle(.clearCanvas)
-            } label: {
-                Label("Clear Overlay", systemImage: "trash")
-            }
-            .disabled(!isOverlayVisible)
-            
-            Button {
+            },
+            onAddTestStroke: {
                 overlayWindowController.addSampleStroke()
-            } label: {
-                Label("Add Test Stroke", systemImage: "scribble.variable")
             }
-            .disabled(!isOverlayVisible)
-            
-            Text("Local test event")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        }
+        )
         .padding()
         .frame(minWidth: 320, minHeight: 180)
+    }
+    
+    private func toggleOverlay() {
+        isOverlayVisible.toggle()
+
+        if isOverlayVisible {
+            overlayWindowController.showOverlay()
+        } else {
+            overlayWindowController.hideOverlay()
+        }
     }
 }
 
