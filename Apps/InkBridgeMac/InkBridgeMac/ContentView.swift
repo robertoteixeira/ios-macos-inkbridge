@@ -36,7 +36,7 @@ struct ContentView: View {
             .buttonStyle(.borderedProminent)
             
             Button {
-                overlayWindowController.clearOverlay()
+                overlayWindowController.handle(.clearCanvas)
             } label: {
                 Label("Clear Overlay", systemImage: "trash")
             }
