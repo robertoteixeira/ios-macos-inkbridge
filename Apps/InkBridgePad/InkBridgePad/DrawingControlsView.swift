@@ -48,7 +48,7 @@ struct DrawingControlsView: View {
             }
             
             VStack(alignment: .trailing, spacing: 4) {
-                ForEach(recentEvents, id: \.self) { event in
+                ForEach(Array(recentEvents.enumerated()), id: \.offset) { _, event in
                     Text(event)
                         .font(.caption2)
                         .foregroundStyle(.secondary)
