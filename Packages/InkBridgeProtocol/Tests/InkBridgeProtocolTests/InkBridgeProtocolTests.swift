@@ -47,3 +47,21 @@ import Testing
 
     #expect(decoded == event)
 }
+
+@Test func remoteInputEventDisplayNamesMatchCases() {
+    let point = StrokePoint(x: 0, y: 0, pressure: 1, timestamp: 0)
+    let style = StrokeStyle(
+        colorHex: "#000000",
+        width: 1,
+        opacity: 1,
+        tool: .pen
+    )
+
+    #expect(RemoteInputEvent.strokeBegan(point, style).displayName == "strokeBegan")
+    #expect(RemoteInputEvent.strokeMoved([point]).displayName == "strokeMoved")
+    #expect(RemoteInputEvent.strokeEnded(point).displayName == "strokeEnded")
+    #expect(RemoteInputEvent.clearCanvas.displayName == "clearCanvas")
+    #expect(RemoteInputEvent.undo.displayName == "undo")
+    #expect(RemoteInputEvent.redo.displayName == "redo")
+    #expect(RemoteInputEvent.modeChanged(.overlay).displayName == "modeChanged")
+}

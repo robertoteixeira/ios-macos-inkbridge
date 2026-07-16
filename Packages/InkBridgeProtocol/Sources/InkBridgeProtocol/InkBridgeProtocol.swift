@@ -60,3 +60,24 @@ public enum RemoteInputEvent: Codable, Sendable, Equatable {
     case redo
     case modeChanged(RemoteMode)
 }
+
+public extension RemoteInputEvent {
+    var displayName: String {
+        switch self {
+        case .strokeBegan:
+            "strokeBegan"
+        case .strokeMoved:
+            "strokeMoved"
+        case .strokeEnded:
+            "strokeEnded"
+        case .clearCanvas:
+            "clearCanvas"
+        case .undo:
+            "undo"
+        case .redo:
+            "redo"
+        case .modeChanged:
+            "modeChanged"
+        }
+    }
+}
