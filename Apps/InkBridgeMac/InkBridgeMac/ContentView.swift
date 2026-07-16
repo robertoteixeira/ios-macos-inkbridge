@@ -11,12 +11,12 @@ import InkBridgeProtocol
 struct ContentView: View {
     @State private var isOverlayVisible = false
     @State private var overlayWindowController = OverlayWindowController()
-    @State private var recentEvents: [String] = []
+    @State private var eventLog = RemoteInputEventLog()
 
     var body: some View {
         MacControlPanelView(
             isOverlayVisible: isOverlayVisible,
-            recentEvents: recentEvents,
+            recentEvents: eventLog.entries,
             onToggleOverlay: toggleOverlay,
             onClearOverlay: {
                 handleOverlayEvent(.clearCanvas)
@@ -53,11 +53,7 @@ struct ContentView: View {
     }
 
     private func recordEvent(_ event: RemoteInputEvent) {
-        recentEvents.insert(event.displayName, at: 0)
-
-        if recentEvents.count > 5 {
-            recentEvents.removeLast()
-        }
+        eventLog = eventLog.adding(event)
     }
 }
 

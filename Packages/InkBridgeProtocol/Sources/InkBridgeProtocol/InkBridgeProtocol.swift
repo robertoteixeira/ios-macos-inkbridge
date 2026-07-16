@@ -81,3 +81,27 @@ public extension RemoteInputEvent {
         }
     }
 }
+
+public struct RemoteInputEventLog: Sendable, Equatable {
+    public let entries: [String]
+    public let limit: Int
+
+    public init(entries: [String] = [], limit: Int = 5) {
+        self.entries = entries
+        self.limit = limit
+    }
+
+    public func adding(_ event: RemoteInputEvent) -> RemoteInputEventLog {
+        var updatedEntries = entries
+        updatedEntries.insert(event.displayName, at: 0)
+
+        if updatedEntries.count > limit {
+            updatedEntries.removeLast()
+        }
+
+        return RemoteInputEventLog(
+            entries: updatedEntries,
+            limit: limit
+        )
+    }
+}

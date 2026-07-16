@@ -65,3 +65,20 @@ import Testing
     #expect(RemoteInputEvent.redo.displayName == "redo")
     #expect(RemoteInputEvent.modeChanged(.overlay).displayName == "modeChanged")
 }
+
+@Test func remoteInputEventLogAddsNewestEventFirst() {
+    let log = RemoteInputEventLog()
+        .adding(.undo)
+        .adding(.redo)
+
+    #expect(log.entries == ["redo", "undo"])
+}
+
+@Test func remoteInputEventLogLimitsEntryCount() {
+    let log = RemoteInputEventLog(limit: 2)
+        .adding(.undo)
+        .adding(.redo)
+        .adding(.clearCanvas)
+
+    #expect(log.entries == ["clearCanvas", "redo"])
+}

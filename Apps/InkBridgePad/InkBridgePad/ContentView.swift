@@ -11,7 +11,7 @@ import InkBridgeProtocol
 struct ContentView: View {
     @State private var completedStrokes: [InkStroke] = []
     @State private var undoneStrokes: [InkStroke] = []
-    @State private var recentEvents: [String] = []
+    @State private var eventLog = RemoteInputEventLog()
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -35,7 +35,7 @@ struct ContentView: View {
                 onUndo: undoLastStroke,
                 onRedo: redoLastStroke,
                 onClear: clearCanvas,
-                recentEvents: recentEvents
+                recentEvents: eventLog.entries
             )
             .padding()
         }
@@ -67,12 +67,7 @@ struct ContentView: View {
     
     private func handleRemoteInputEvent(_ event: RemoteInputEvent) {
         print(event)
-        
-        recentEvents.insert(event.displayName, at: 0)
-        
-        if recentEvents.count > 5 {
-            recentEvents.removeLast()
-        }
+        eventLog = eventLog.adding(event)
     }
 }
 
