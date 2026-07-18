@@ -7,13 +7,11 @@
 
 import SwiftUI
 import InkBridgeProtocol
-import InkBridgeNetworking
 
 struct ContentView: View {
     @State private var completedStrokes: [InkStroke] = []
     @State private var undoneStrokes: [InkStroke] = []
-    @State private var eventLog = RemoteInputEventLog()
-    @State private var transport: RemoteInputTransport?
+    @State private var session = PadRemoteInputSession()
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -24,7 +22,7 @@ struct ContentView: View {
                         undoneStrokes = []
                     }
                             
-                    sendToLocalTransport(event)
+                    session.send(event)
                 }
             )
             .ignoresSafeArea()
@@ -37,7 +35,7 @@ struct ContentView: View {
                 onUndo: undoLastStroke,
                 onRedo: redoLastStroke,
                 onClear: clearCanvas,
-                recentEvents: eventLog.entries
+                recentEvents: session.eventLog.entries
             )
             .padding()
         }
@@ -49,7 +47,7 @@ struct ContentView: View {
         }
 
         undoneStrokes.append(stroke)
-        sendToLocalTransport(.undo)
+        session.send(.undo)
     }
 
     private func redoLastStroke() {
@@ -58,32 +56,13 @@ struct ContentView: View {
         }
 
         completedStrokes.append(stroke)
-        sendToLocalTransport(.redo)
+        session.send(.redo)
     }
 
     private func clearCanvas() {
         completedStrokes = []
         undoneStrokes = []
-        sendToLocalTransport(.clearCanvas)
-    }
-    
-    private func sendToLocalTransport(_ event: RemoteInputEvent) {
-        if transport == nil {
-            transport = makeLocalTransport()
-        }
-
-        transport?.send(event)
-    }
-    
-    private func makeLocalTransport() -> RemoteInputTransport {
-        LocalRemoteInputTransport { event in
-            recordRemoteInputEvent(event)
-        }
-    }
-
-    private func recordRemoteInputEvent(_ event: RemoteInputEvent) {
-        print(event)
-        eventLog = eventLog.adding(event)
+        session.send(.clearCanvas)
     }
 }
 
