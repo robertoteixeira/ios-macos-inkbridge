@@ -1,9 +1,4 @@
-import Foundation
 import InkBridgeProtocol
-
-public protocol RemoteInputTransport {
-    func send(_ event: RemoteInputEvent)
-}
 
 public final class LocalRemoteInputTransport: RemoteInputTransport {
     private let onEvent: (RemoteInputEvent) -> Void
