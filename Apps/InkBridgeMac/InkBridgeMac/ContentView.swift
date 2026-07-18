@@ -7,34 +7,34 @@
 
 import SwiftUI
 import InkBridgeProtocol
-import InkBridgeNetworking
 
 struct ContentView: View {
     @State private var isOverlayVisible = false
     @State private var overlayWindowController = OverlayWindowController()
-    @State private var eventLog = RemoteInputEventLog()
-    @State private var transport: RemoteInputTransport?
+    @State private var session: MacRemoteInputSession?
 
     var body: some View {
         MacControlPanelView(
             isOverlayVisible: isOverlayVisible,
-            recentEvents: eventLog.entries,
+            recentEvents: session?.eventLog.entries ?? [],
             onToggleOverlay: toggleOverlay,
             onClearOverlay: {
-                handleOverlayEvent(.clearCanvas)
+                session?.send(.clearCanvas)
             },
             onUndo: {
-                handleOverlayEvent(.undo)
+                session?.send(.undo)
             },
             onRedo: {
-                handleOverlayEvent(.redo)
+                session?.send(.redo)
             },
             onAddTestStroke: {
                 let replayer = OverlayEventReplayer(
                     events: SampleOverlayEvents.strokeEvents()
                 )
 
-                replayer.replay(into: sendToLocalTransport)
+                replayer.replay { event in
+                    session?.send(event)
+                }
             }
         )
         .padding()
@@ -45,32 +45,15 @@ struct ContentView: View {
         isOverlayVisible.toggle()
 
         if isOverlayVisible {
+            if session == nil {
+                session = MacRemoteInputSession { event in
+                    overlayWindowController.handle(event)
+                }
+            }
+
             overlayWindowController.showOverlay()
         } else {
             overlayWindowController.hideOverlay()
-        }
-    }
-    
-    private func handleOverlayEvent(_ event: RemoteInputEvent) {
-        overlayWindowController.handle(event)
-        recordEvent(event)
-    }
-
-    private func recordEvent(_ event: RemoteInputEvent) {
-        eventLog = eventLog.adding(event)
-    }
-    
-    private func sendToLocalTransport(_ event: RemoteInputEvent) {
-        if transport == nil {
-            transport = makeLocalTransport()
-        }
-
-        transport?.send(event)
-    }
-    
-    private func makeLocalTransport() -> RemoteInputTransport {
-        LocalRemoteInputTransport { event in
-            handleOverlayEvent(event)
         }
     }
 }
