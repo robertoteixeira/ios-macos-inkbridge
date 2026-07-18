@@ -26,3 +26,35 @@ import InkBridgeProtocol
 
     #expect(receivedEvents == [.clearCanvas])
 }
+
+@Test func remoteInputEventCodecRoundTripsControlEvent() throws {
+    let event = RemoteInputEvent.undo
+
+    let data = try RemoteInputEventCodec.encode(event)
+    let decoded = try RemoteInputEventCodec.decode(data)
+
+    #expect(decoded == event)
+}
+
+@Test func remoteInputEventCodecRoundTripsStrokeEvent() throws {
+    let point = StrokePoint(
+        x: 0.25,
+        y: 0.75,
+        pressure: 0.8,
+        timestamp: 123
+    )
+
+    let style = StrokeStyle(
+        colorHex: "#00AAFF",
+        width: 6,
+        opacity: 0.7,
+        tool: .marker
+    )
+
+    let event = RemoteInputEvent.strokeBegan(point, style)
+
+    let data = try RemoteInputEventCodec.encode(event)
+    let decoded = try RemoteInputEventCodec.decode(data)
+
+    #expect(decoded == event)
+}
