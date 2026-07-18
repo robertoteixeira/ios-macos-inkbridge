@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import InkBridgeNetworking
 import InkBridgeProtocol
@@ -57,4 +58,25 @@ import InkBridgeProtocol
     let decoded = try RemoteInputEventCodec.decode(data)
 
     #expect(decoded == event)
+}
+
+@Test func messageFrameRoundTripsPayload() {
+    let payload = Data([1, 2, 3, 4])
+
+    let frame = RemoteInputMessageFrame.encode(payload)
+    let decoded = RemoteInputMessageFrame.decode(frame)
+
+    #expect(decoded == payload)
+}
+
+@Test func messageFrameReturnsNilForIncompleteHeader() {
+    let frame = Data([0, 0])
+
+    #expect(RemoteInputMessageFrame.decode(frame) == nil)
+}
+
+@Test func messageFrameReturnsNilForIncompletePayload() {
+    let frame = Data([0, 0, 0, 4, 1, 2])
+
+    #expect(RemoteInputMessageFrame.decode(frame) == nil)
 }
