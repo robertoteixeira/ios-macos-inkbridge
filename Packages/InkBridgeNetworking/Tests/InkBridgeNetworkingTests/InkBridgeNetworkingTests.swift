@@ -14,3 +14,15 @@ import InkBridgeProtocol
 
     #expect(receivedEvents == [.undo, .redo])
 }
+
+@Test func localTransportCanBeUsedAsRemoteInputTransport() {
+    var receivedEvents: [RemoteInputEvent] = []
+
+    let transport: RemoteInputTransport = LocalRemoteInputTransport { event in
+        receivedEvents.append(event)
+    }
+
+    transport.send(.clearCanvas)
+
+    #expect(receivedEvents == [.clearCanvas])
+}
