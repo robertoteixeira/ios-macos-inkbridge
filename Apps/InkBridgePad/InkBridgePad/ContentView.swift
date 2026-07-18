@@ -69,12 +69,16 @@ struct ContentView: View {
     
     private func sendToLocalTransport(_ event: RemoteInputEvent) {
         if transport == nil {
-            transport = LocalRemoteInputTransport { event in
-                recordRemoteInputEvent(event)
-            }
+            transport = makeLocalTransport()
         }
 
         transport?.send(event)
+    }
+    
+    private func makeLocalTransport() -> RemoteInputTransport {
+        LocalRemoteInputTransport { event in
+            recordRemoteInputEvent(event)
+        }
     }
 
     private func recordRemoteInputEvent(_ event: RemoteInputEvent) {
