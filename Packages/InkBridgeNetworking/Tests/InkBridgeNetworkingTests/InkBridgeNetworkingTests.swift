@@ -80,3 +80,26 @@ import InkBridgeProtocol
 
     #expect(RemoteInputMessageFrame.decode(frame) == nil)
 }
+
+@Test func messageFrameDecoderWaitsForCompleteFrame() {
+    let payload = Data([1, 2, 3, 4])
+    let frame = RemoteInputMessageFrame.encode(payload)
+
+    var decoder = RemoteInputMessageFrameDecoder()
+
+    #expect(decoder.append(frame.prefix(2)) == [])
+    #expect(decoder.append(frame.dropFirst(2)) == [payload])
+}
+
+@Test func messageFrameDecoderReadsMultipleFrames() {
+    let firstPayload = Data([1])
+    let secondPayload = Data([2, 3])
+
+    var data = Data()
+    data.append(RemoteInputMessageFrame.encode(firstPayload))
+    data.append(RemoteInputMessageFrame.encode(secondPayload))
+
+    var decoder = RemoteInputMessageFrameDecoder()
+
+    #expect(decoder.append(data) == [firstPayload, secondPayload])
+}

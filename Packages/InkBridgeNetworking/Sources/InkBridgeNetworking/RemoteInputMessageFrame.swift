@@ -15,17 +15,20 @@ public enum RemoteInputMessageFrame {
             return nil
         }
 
-        let length = frame.prefix(headerSize).withUnsafeBytes { buffer in
-            buffer.load(as: UInt32.self).bigEndian
+        let length = frame.prefix(headerSize).reduce(UInt32(0)) { value, byte in
+            (value << 8) | UInt32(byte)
         }
 
-        let payloadStart = headerSize
-        let payloadEnd = payloadStart + Int(length)
+        let payloadStartOffset = headerSize
+        let payloadEndOffset = payloadStartOffset + Int(length)
 
-        guard frame.count >= payloadEnd else {
+        guard frame.count >= payloadEndOffset else {
             return nil
         }
 
-        return frame[payloadStart..<payloadEnd]
+        let payloadStart = frame.index(frame.startIndex, offsetBy: payloadStartOffset)
+        let payloadEnd = frame.index(frame.startIndex, offsetBy: payloadEndOffset)
+
+        return Data(frame[payloadStart..<payloadEnd])
     }
 }
