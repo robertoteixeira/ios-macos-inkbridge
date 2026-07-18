@@ -28,10 +28,11 @@ struct ContentView: View {
                 handleOverlayEvent(.redo)
             },
             onAddTestStroke: {
-                OverlayEventReplayer(
+                let replayer = OverlayEventReplayer(
                     events: SampleOverlayEvents.strokeEvents()
                 )
-                .replay(into: handleOverlayEvent)
+
+                replayer.replay(into: handleOverlayEvent)
             }
         )
         .padding()
