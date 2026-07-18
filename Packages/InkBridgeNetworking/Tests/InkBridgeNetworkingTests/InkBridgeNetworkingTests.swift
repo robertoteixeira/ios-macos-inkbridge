@@ -3,6 +3,14 @@ import Testing
 @testable import InkBridgeNetworking
 import InkBridgeProtocol
 
+private final class CapturingByteTransport: RemoteInputByteTransport {
+    private(set) var sentData: [Data] = []
+
+    func send(_ data: Data) {
+        sentData.append(data)
+    }
+}
+
 @Test func localTransportSendsEventsToHandler() {
     var receivedEvents: [RemoteInputEvent] = []
 
@@ -142,4 +150,13 @@ import InkBridgeProtocol
     var decoder = RemoteInputEventStreamDecoder()
 
     #expect(try decoder.append(data) == [.undo, .redo])
+}
+
+@Test func byteTransportCapturesSentData() {
+    let transport = CapturingByteTransport()
+    let data = Data([1, 2, 3])
+
+    transport.send(data)
+
+    #expect(transport.sentData == [data])
 }
