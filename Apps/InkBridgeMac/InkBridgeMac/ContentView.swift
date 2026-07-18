@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var isOverlayVisible = false
     @State private var overlayWindowController = OverlayWindowController()
     @State private var eventLog = RemoteInputEventLog()
-    @State private var transport: LocalRemoteInputTransport?
+    @State private var transport: RemoteInputTransport?
 
     var body: some View {
         MacControlPanelView(
