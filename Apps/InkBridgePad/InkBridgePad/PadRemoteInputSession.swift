@@ -25,12 +25,11 @@ final class PadRemoteInputSession {
 
     private func makeLocalTransport() -> RemoteInputTransport {
         LocalRemoteInputTransport { [weak self] event in
-            self?.record(event)
+            self?.handle(event)
         }
     }
 
-    private func record(_ event: RemoteInputEvent) {
-        print(event)
+    private func handle(_ event: RemoteInputEvent) {
         eventLog = eventLog.adding(event)
     }
 }
