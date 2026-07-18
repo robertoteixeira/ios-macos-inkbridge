@@ -120,3 +120,26 @@ import InkBridgeProtocol
 
     #expect(decoded == nil)
 }
+
+@Test func remoteInputEventStreamDecoderWaitsForCompleteEventFrame() throws {
+    let event = RemoteInputEvent.undo
+    let frame = try RemoteInputEventMessageCodec.encode(event)
+
+    var decoder = RemoteInputEventStreamDecoder()
+
+    #expect(try decoder.append(frame.prefix(2)) == [])
+    #expect(try decoder.append(frame.dropFirst(2)) == [event])
+}
+
+@Test func remoteInputEventStreamDecoderReadsMultipleEvents() throws {
+    let firstFrame = try RemoteInputEventMessageCodec.encode(.undo)
+    let secondFrame = try RemoteInputEventMessageCodec.encode(.redo)
+
+    var data = Data()
+    data.append(firstFrame)
+    data.append(secondFrame)
+
+    var decoder = RemoteInputEventStreamDecoder()
+
+    #expect(try decoder.append(data) == [.undo, .redo])
+}
