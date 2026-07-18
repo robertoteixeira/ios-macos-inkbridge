@@ -12,11 +12,15 @@ let package = Package(
             targets: ["InkBridgeNetworking"]
         ),
     ],
+    dependencies: [
+        .package(path: "../InkBridgeProtocol")
+    ],    
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "InkBridgeNetworking"
+            name: "InkBridgeNetworking",
+            dependencies: ["InkBridgeProtocol"]
         ),
         .testTarget(
             name: "InkBridgeNetworkingTests",

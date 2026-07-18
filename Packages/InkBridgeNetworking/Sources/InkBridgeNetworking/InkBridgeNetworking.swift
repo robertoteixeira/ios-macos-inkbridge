@@ -1,2 +1,14 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+import Foundation
+import InkBridgeProtocol
+
+public final class LocalRemoteInputBridge: @unchecked Sendable {
+    private let onEvent: (RemoteInputEvent) -> Void
+
+    public init(onEvent: @escaping (RemoteInputEvent) -> Void) {
+        self.onEvent = onEvent
+    }
+
+    public func send(_ event: RemoteInputEvent) {
+        onEvent(event)
+    }
+}

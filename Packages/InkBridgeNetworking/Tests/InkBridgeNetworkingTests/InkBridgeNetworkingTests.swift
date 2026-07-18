@@ -1,8 +1,16 @@
 import Testing
 @testable import InkBridgeNetworking
+import InkBridgeProtocol
 
-@Test func example() async throws {
-    // Write your test here and use APIs like `#expect(...)` to check expected conditions.
-    // Swift Testing Documentation
-    // https://developer.apple.com/documentation/testing
+@Test func localBridgeSendsEventsToHandler() {
+    var receivedEvents: [RemoteInputEvent] = []
+
+    let bridge = LocalRemoteInputBridge { event in
+        receivedEvents.append(event)
+    }
+
+    bridge.send(.undo)
+    bridge.send(.redo)
+
+    #expect(receivedEvents == [.undo, .redo])
 }
