@@ -7,11 +7,13 @@
 
 import SwiftUI
 import InkBridgeProtocol
+import InkBridgeNetworking
 
 struct ContentView: View {
     @State private var completedStrokes: [InkStroke] = []
     @State private var undoneStrokes: [InkStroke] = []
     @State private var eventLog = RemoteInputEventLog()
+    @State private var bridge: LocalRemoteInputBridge?
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -22,7 +24,7 @@ struct ContentView: View {
                         undoneStrokes = []
                     }
                             
-                    handleRemoteInputEvent(event)
+                    sendToLocalBridge(event)
                 }
             )
             .ignoresSafeArea()
@@ -47,7 +49,7 @@ struct ContentView: View {
         }
 
         undoneStrokes.append(stroke)
-        handleRemoteInputEvent(.undo)
+        sendToLocalBridge(.undo)
     }
 
     private func redoLastStroke() {
@@ -56,16 +58,26 @@ struct ContentView: View {
         }
 
         completedStrokes.append(stroke)
-        handleRemoteInputEvent(.redo)
+        sendToLocalBridge(.redo)
     }
 
     private func clearCanvas() {
         completedStrokes = []
         undoneStrokes = []
-        handleRemoteInputEvent(.clearCanvas)
+        sendToLocalBridge(.clearCanvas)
     }
     
-    private func handleRemoteInputEvent(_ event: RemoteInputEvent) {
+    private func sendToLocalBridge(_ event: RemoteInputEvent) {
+        if bridge == nil {
+            bridge = LocalRemoteInputBridge { event in
+                recordRemoteInputEvent(event)
+            }
+        }
+
+        bridge?.send(event)
+    }
+
+    private func recordRemoteInputEvent(_ event: RemoteInputEvent) {
         print(event)
         eventLog = eventLog.adding(event)
     }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0322EC633006CABA0016457D /* InkBridgeRendering in Frameworks */ = {isa = PBXBuildFile; productRef = 0322EC623006CABA0016457D /* InkBridgeRendering */; };
 		0342629B2FFD8F3C0049360B /* InkBridgeProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 0342629A2FFD8F3C0049360B /* InkBridgeProtocol */; };
+		03E42929300BC64700A10967 /* InkBridgeNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 03E42928300BC64700A10967 /* InkBridgeNetworking */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 			files = (
 				0342629B2FFD8F3C0049360B /* InkBridgeProtocol in Frameworks */,
 				0322EC633006CABA0016457D /* InkBridgeRendering in Frameworks */,
+				03E42929300BC64700A10967 /* InkBridgeNetworking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +123,7 @@
 			packageProductDependencies = (
 				0342629A2FFD8F3C0049360B /* InkBridgeProtocol */,
 				0322EC623006CABA0016457D /* InkBridgeRendering */,
+				03E42928300BC64700A10967 /* InkBridgeNetworking */,
 			);
 			productName = InkBridgePad;
 			productReference = 03362B9C2FFBF008003486F2 /* InkBridgePad.app */;
@@ -208,6 +211,7 @@
 			packageReferences = (
 				034262992FFD8F3C0049360B /* XCLocalSwiftPackageReference "../../Packages/InkBridgeProtocol" */,
 				0322EC613006CABA0016457D /* XCLocalSwiftPackageReference "../../Packages/InkBridgeRendering" */,
+				03E42927300BC64700A10967 /* XCLocalSwiftPackageReference "../../Packages/InkBridgeNetworking" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 03362B9D2FFBF008003486F2 /* Products */;
@@ -607,6 +611,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../Packages/InkBridgeProtocol;
 		};
+		03E42927300BC64700A10967 /* XCLocalSwiftPackageReference "../../Packages/InkBridgeNetworking" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../Packages/InkBridgeNetworking;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -617,6 +625,10 @@
 		0342629A2FFD8F3C0049360B /* InkBridgeProtocol */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = InkBridgeProtocol;
+		};
+		03E42928300BC64700A10967 /* InkBridgeNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = InkBridgeNetworking;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
