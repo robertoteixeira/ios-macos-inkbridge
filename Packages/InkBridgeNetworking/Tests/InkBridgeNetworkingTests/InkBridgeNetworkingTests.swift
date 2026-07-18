@@ -103,3 +103,20 @@ import InkBridgeProtocol
 
     #expect(decoder.append(data) == [firstPayload, secondPayload])
 }
+
+@Test func remoteInputEventMessageCodecRoundTripsEvent() throws {
+    let event = RemoteInputEvent.redo
+
+    let frame = try RemoteInputEventMessageCodec.encode(event)
+    let decoded = try RemoteInputEventMessageCodec.decode(frame)
+
+    #expect(decoded == event)
+}
+
+@Test func remoteInputEventMessageCodecReturnsNilForIncompleteFrame() throws {
+    let frame = Data([0, 0])
+
+    let decoded = try RemoteInputEventMessageCodec.decode(frame)
+
+    #expect(decoded == nil)
+}
