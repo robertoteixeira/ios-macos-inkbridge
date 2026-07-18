@@ -1,7 +1,7 @@
 import Foundation
 import InkBridgeProtocol
 
-public final class LocalRemoteInputBridge: @unchecked Sendable {
+public final class LocalRemoteInputBridge {
     private let onEvent: (RemoteInputEvent) -> Void
 
     public init(onEvent: @escaping (RemoteInputEvent) -> Void) {
