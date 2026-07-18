@@ -2,15 +2,15 @@ import Testing
 @testable import InkBridgeNetworking
 import InkBridgeProtocol
 
-@Test func localBridgeSendsEventsToHandler() {
+@Test func localTransportSendsEventsToHandler() {
     var receivedEvents: [RemoteInputEvent] = []
 
-    let bridge = LocalRemoteInputBridge { event in
+    let transport = LocalRemoteInputTransport { event in
         receivedEvents.append(event)
     }
 
-    bridge.send(.undo)
-    bridge.send(.redo)
+    transport.send(.undo)
+    transport.send(.redo)
 
     #expect(receivedEvents == [.undo, .redo])
 }

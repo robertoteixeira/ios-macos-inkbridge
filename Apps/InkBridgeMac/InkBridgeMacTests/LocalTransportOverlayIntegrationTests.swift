@@ -1,5 +1,5 @@
 //
-//  LocalBridgeOverlayIntegrationTests.swift
+//  LocalTransportOverlayIntegrationTests.swift
 //  InkBridgeMac
 //
 //  Created by Roberto Teixeira on 18/07/2026.
@@ -10,15 +10,15 @@ import Testing
 import InkBridgeNetworking
 import InkBridgeProtocol
 
-@Test func localBridgeCanDriveOverlayViewModel() {
+@Test func localTransportCanDriveOverlayViewModel() {
     let viewModel = OverlayViewModel()
 
-    let bridge = LocalRemoteInputBridge { event in
+    let transport = LocalRemoteInputTransport { event in
         viewModel.handle(event)
     }
 
     for event in SampleOverlayEvents.strokeEvents() {
-        bridge.send(event)
+        transport.send(event)
     }
 
     #expect(viewModel.strokes.count == 1)

@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var isOverlayVisible = false
     @State private var overlayWindowController = OverlayWindowController()
     @State private var eventLog = RemoteInputEventLog()
-    @State private var bridge: LocalRemoteInputBridge?
+    @State private var transport: LocalRemoteInputTransport?
 
     var body: some View {
         MacControlPanelView(
@@ -34,7 +34,7 @@ struct ContentView: View {
                     events: SampleOverlayEvents.strokeEvents()
                 )
 
-                replayer.replay(into: sendToLocalBridge)
+                replayer.replay(into: sendToLocalTransport)
             }
         )
         .padding()
@@ -60,14 +60,14 @@ struct ContentView: View {
         eventLog = eventLog.adding(event)
     }
     
-    private func sendToLocalBridge(_ event: RemoteInputEvent) {
-        if bridge == nil {
-            bridge = LocalRemoteInputBridge { event in
+    private func sendToLocalTransport(_ event: RemoteInputEvent) {
+        if transport == nil {
+            transport = LocalRemoteInputTransport { event in
                 handleOverlayEvent(event)
             }
         }
 
-        bridge?.send(event)
+        transport?.send(event)
     }
 }
 

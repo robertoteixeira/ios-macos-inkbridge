@@ -1,5 +1,5 @@
 //
-//  LocalBridgeEventLogIntegrationTests.swift
+//  LocalTransportEventLogIntegrationTests.swift
 //  InkBridgePad
 //
 //  Created by Roberto Teixeira on 18/07/2026.
@@ -10,16 +10,16 @@ import Testing
 import InkBridgeNetworking
 import InkBridgeProtocol
 
-@Test func localBridgeCanDriveEventLog() {
+@Test func localTransportCanDriveEventLog() {
     var eventLog = RemoteInputEventLog()
 
-    let bridge = LocalRemoteInputBridge { event in
+    let transport = LocalRemoteInputTransport { event in
         eventLog = eventLog.adding(event)
     }
 
-    bridge.send(.undo)
-    bridge.send(.redo)
-    bridge.send(.clearCanvas)
+    transport.send(.undo)
+    transport.send(.redo)
+    transport.send(.clearCanvas)
 
     #expect(eventLog.entries == ["clearCanvas", "redo", "undo"])
 }

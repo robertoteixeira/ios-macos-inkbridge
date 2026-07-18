@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var completedStrokes: [InkStroke] = []
     @State private var undoneStrokes: [InkStroke] = []
     @State private var eventLog = RemoteInputEventLog()
-    @State private var bridge: LocalRemoteInputBridge?
+    @State private var transport: LocalRemoteInputTransport?
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -24,7 +24,7 @@ struct ContentView: View {
                         undoneStrokes = []
                     }
                             
-                    sendToLocalBridge(event)
+                    sendToLocalTransport(event)
                 }
             )
             .ignoresSafeArea()
@@ -49,7 +49,7 @@ struct ContentView: View {
         }
 
         undoneStrokes.append(stroke)
-        sendToLocalBridge(.undo)
+        sendToLocalTransport(.undo)
     }
 
     private func redoLastStroke() {
@@ -58,23 +58,23 @@ struct ContentView: View {
         }
 
         completedStrokes.append(stroke)
-        sendToLocalBridge(.redo)
+        sendToLocalTransport(.redo)
     }
 
     private func clearCanvas() {
         completedStrokes = []
         undoneStrokes = []
-        sendToLocalBridge(.clearCanvas)
+        sendToLocalTransport(.clearCanvas)
     }
     
-    private func sendToLocalBridge(_ event: RemoteInputEvent) {
-        if bridge == nil {
-            bridge = LocalRemoteInputBridge { event in
+    private func sendToLocalTransport(_ event: RemoteInputEvent) {
+        if transport == nil {
+            transport = LocalRemoteInputTransport { event in
                 recordRemoteInputEvent(event)
             }
         }
 
-        bridge?.send(event)
+        transport?.send(event)
     }
 
     private func recordRemoteInputEvent(_ event: RemoteInputEvent) {
