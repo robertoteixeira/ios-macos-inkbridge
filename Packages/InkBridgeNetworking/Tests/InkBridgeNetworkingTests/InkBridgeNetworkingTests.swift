@@ -28,6 +28,18 @@ private final class FakeRemoteInputConnection: RemoteInputConnection {
     }
 }
 
+private final class FakeRemoteInputListener: RemoteInputListener {
+    private(set) var state: RemoteInputConnectionState = .disconnected
+
+    func start() {
+        state = .connected
+    }
+
+    func stop() {
+        state = .disconnected
+    }
+}
+
 @Test func localTransportSendsEventsToHandler() {
     var receivedEvents: [RemoteInputEvent] = []
 
@@ -252,4 +264,16 @@ private final class FakeRemoteInputConnection: RemoteInputConnection {
     byteTransport.send(data)
 
     #expect(connection.sentData == [data])
+}
+
+@Test func remoteInputListenerTracksLifecycle() {
+    let listener = FakeRemoteInputListener()
+
+    #expect(listener.state == .disconnected)
+
+    listener.start()
+    #expect(listener.state == .connected)
+
+    listener.stop()
+    #expect(listener.state == .disconnected)
 }
