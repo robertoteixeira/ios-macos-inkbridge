@@ -11,6 +11,23 @@ private final class CapturingByteTransport: RemoteInputByteTransport {
     }
 }
 
+private final class FakeRemoteInputConnection: RemoteInputConnection {
+    private(set) var state: RemoteInputConnectionState = .disconnected
+    private(set) var sentData: [Data] = []
+
+    func start() {
+        state = .connected
+    }
+
+    func stop() {
+        state = .disconnected
+    }
+
+    func send(_ data: Data) {
+        sentData.append(data)
+    }
+}
+
 @Test func localTransportSendsEventsToHandler() {
     var receivedEvents: [RemoteInputEvent] = []
 
@@ -209,4 +226,20 @@ private final class CapturingByteTransport: RemoteInputByteTransport {
     #expect(RemoteInputConnectionState.connected == .connected)
     #expect(RemoteInputConnectionState.failed("Boom") == .failed("Boom"))
     #expect(RemoteInputConnectionState.failed("Boom") != .failed("Nope"))
+}
+
+@Test func remoteInputConnectionTracksLifecycleAndSentData() {
+    let connection = FakeRemoteInputConnection()
+    let data = Data([1, 2, 3])
+
+    #expect(connection.state == .disconnected)
+
+    connection.start()
+    #expect(connection.state == .connected)
+
+    connection.send(data)
+    #expect(connection.sentData == [data])
+
+    connection.stop()
+    #expect(connection.state == .disconnected)
 }
