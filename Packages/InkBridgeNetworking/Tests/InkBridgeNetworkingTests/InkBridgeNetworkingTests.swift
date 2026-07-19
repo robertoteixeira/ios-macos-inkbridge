@@ -172,3 +172,33 @@ private final class CapturingByteTransport: RemoteInputByteTransport {
     let decoded = try RemoteInputEventMessageCodec.decode(byteTransport.sentData[0])
     #expect(decoded == .undo)
 }
+
+@Test func remoteInputEventReceiverWaitsForCompleteFrame() throws {
+    var receivedEvents: [RemoteInputEvent] = []
+    let receiver = RemoteInputEventReceiver { event in
+        receivedEvents.append(event)
+    }
+
+    let frame = try RemoteInputEventMessageCodec.encode(.undo)
+
+    try receiver.receive(frame.prefix(2))
+    #expect(receivedEvents == [])
+
+    try receiver.receive(frame.dropFirst(2))
+    #expect(receivedEvents == [.undo])
+}
+
+@Test func remoteInputEventReceiverDeliversMultipleEvents() throws {
+    var data = Data()
+    data.append(try RemoteInputEventMessageCodec.encode(.undo))
+    data.append(try RemoteInputEventMessageCodec.encode(.redo))
+
+    var receivedEvents: [RemoteInputEvent] = []
+    let receiver = RemoteInputEventReceiver { event in
+        receivedEvents.append(event)
+    }
+
+    try receiver.receive(data)
+
+    #expect(receivedEvents == [.undo, .redo])
+}
