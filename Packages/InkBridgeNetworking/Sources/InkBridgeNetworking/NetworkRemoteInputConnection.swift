@@ -18,7 +18,7 @@ public final class NetworkRemoteInputConnection: RemoteInputConnection, @uncheck
             self?.handle(state)
         }
 
-        connection.start(queue: .main)        
+        connection.start(queue: .main)
     }
 
     public func stop() {
@@ -35,7 +35,7 @@ public final class NetworkRemoteInputConnection: RemoteInputConnection, @uncheck
                 }
             }
         )
-    }    
+    }
 
     private func handle(_ nwState: NWConnection.State) {
         switch nwState {
