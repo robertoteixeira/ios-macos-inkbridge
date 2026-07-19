@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol RemoteInputConnection {
+public protocol RemoteInputConnection: RemoteInputByteTransport {
     var state: RemoteInputConnectionState { get }
 
     func start()

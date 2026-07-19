@@ -243,3 +243,13 @@ private final class FakeRemoteInputConnection: RemoteInputConnection {
     connection.stop()
     #expect(connection.state == .disconnected)
 }
+
+@Test func remoteInputConnectionCanBeUsedAsByteTransport() {
+    let connection = FakeRemoteInputConnection()
+    let byteTransport: RemoteInputByteTransport = connection
+    let data = Data([4, 5, 6])
+
+    byteTransport.send(data)
+
+    #expect(connection.sentData == [data])
+}
