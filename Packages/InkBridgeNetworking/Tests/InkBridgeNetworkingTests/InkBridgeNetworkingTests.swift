@@ -160,3 +160,15 @@ private final class CapturingByteTransport: RemoteInputByteTransport {
 
     #expect(transport.sentData == [data])
 }
+
+@Test func framedRemoteInputTransportSendsEncodedEventFrame() throws {
+    let byteTransport = CapturingByteTransport()
+    let transport = FramedRemoteInputTransport(byteTransport: byteTransport)
+
+    transport.send(.undo)
+
+    #expect(byteTransport.sentData.count == 1)
+
+    let decoded = try RemoteInputEventMessageCodec.decode(byteTransport.sentData[0])
+    #expect(decoded == .undo)
+}
