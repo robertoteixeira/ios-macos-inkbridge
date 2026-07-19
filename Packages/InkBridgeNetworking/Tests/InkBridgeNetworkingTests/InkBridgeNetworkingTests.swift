@@ -202,3 +202,11 @@ private final class CapturingByteTransport: RemoteInputByteTransport {
 
     #expect(receivedEvents == [.undo, .redo])
 }
+
+@Test func connectionStateSupportsEquality() {
+    #expect(RemoteInputConnectionState.disconnected == .disconnected)
+    #expect(RemoteInputConnectionState.connecting == .connecting)
+    #expect(RemoteInputConnectionState.connected == .connected)
+    #expect(RemoteInputConnectionState.failed("Boom") == .failed("Boom"))
+    #expect(RemoteInputConnectionState.failed("Boom") != .failed("Nope"))
+}
