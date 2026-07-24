@@ -13,6 +13,8 @@ import InkBridgeProtocol
 final class MacRemoteInputSession {
     private var transport: RemoteInputTransport?
     private let eventHandler: (RemoteInputEvent) -> Void
+    private var listener: RemoteInputListener?
+    private var connection: RemoteInputConnection?
 
     var eventLog = RemoteInputEventLog()
 
@@ -26,6 +28,30 @@ final class MacRemoteInputSession {
         }
 
         transport?.send(event)
+    }
+    
+    func startListening(port: UInt16 = 9876) {
+        guard listener == nil else {
+            return
+        }
+        
+        do {
+            let listener = try NetworkRemoteInputEventListener(
+                port: port,
+                onConnection: { [weak self] connection in
+                    self?.connection = connection
+                    connection.start()
+                },
+                onEvent: { [weak self] event in
+                    self?.handle(event)
+                }
+            )
+            
+            self.listener = listener
+            listener.start()
+        } catch {
+            eventLog = eventLog.adding(.modeChanged(.overlay))
+        }
     }
 
     private func makeLocalTransport() -> RemoteInputTransport {
