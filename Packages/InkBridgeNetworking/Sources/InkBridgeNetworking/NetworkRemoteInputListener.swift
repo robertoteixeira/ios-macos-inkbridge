@@ -4,13 +4,13 @@ import Network
 @available(macOS 10.14, iOS 12.0, *)
 public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked Sendable {
     private let listener: NWListener
-    private let onConnection: (NetworkRemoteInputConnection) -> Void
+    private let onConnection: (RemoteInputConnection) -> Void
 
     public private(set) var state: RemoteInputConnectionState = .disconnected
 
     public init(
         port: UInt16,
-        onConnection: @escaping (NetworkRemoteInputConnection) -> Void
+        onConnection: @escaping (RemoteInputConnection) -> Void
     ) throws {
         let port = NWEndpoint.Port(rawValue: port) ?? .any
 
