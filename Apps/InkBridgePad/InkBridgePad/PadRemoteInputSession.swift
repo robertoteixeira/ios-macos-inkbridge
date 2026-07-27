@@ -25,6 +25,10 @@ final class PadRemoteInputSession {
     }
     
     func connectToHost(_ host: String, port: UInt16 = 9876) {
+        guard connection == nil else {
+            return
+        }
+        
         let connection = NetworkRemoteInputConnectionFactory.makeHostConnection(
             host: host,
             port: port
