@@ -39,6 +39,9 @@ struct ContentView: View {
             )
             .padding()
         }
+        .onAppear {
+            session.connectToHost("192.168.0.6")
+        }
     }
     
     private func undoLastStroke() {

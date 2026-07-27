@@ -12,6 +12,7 @@ import InkBridgeProtocol
 @Observable
 final class PadRemoteInputSession {
     private var transport: RemoteInputTransport?
+    private var connection: RemoteInputConnection?
 
     var eventLog = RemoteInputEventLog()
 
@@ -21,6 +22,18 @@ final class PadRemoteInputSession {
         }
 
         transport?.send(event)
+    }
+    
+    func connectToHost(_ host: String, port: UInt16 = 9876) {
+        let connection = NetworkRemoteInputConnectionFactory.makeHostConnection(
+            host: host,
+            port: port
+        )
+
+        self.connection = connection
+        transport = FramedRemoteInputTransport(byteTransport: connection)
+
+        connection.start()
     }
 
     private func makeLocalTransport() -> RemoteInputTransport {
