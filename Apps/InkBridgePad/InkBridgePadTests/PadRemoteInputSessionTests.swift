@@ -8,6 +8,7 @@
 import Testing
 @testable import InkBridgePad
 import InkBridgeProtocol
+import InkBridgeNetworking
 
 @Test func padRemoteInputSessionRecordsSentEvents() {
     let session = PadRemoteInputSession()
@@ -16,4 +17,10 @@ import InkBridgeProtocol
     session.send(.redo)
 
     #expect(session.eventLog.entries == ["redo", "undo"])
+}
+
+@Test func padRemoteInputSessionStartsDisconnected() {
+    let session = PadRemoteInputSession()
+    
+    #expect(session.connectionState == .disconnected)
 }

@@ -15,6 +15,10 @@ final class PadRemoteInputSession {
     private var connection: RemoteInputConnection?
 
     var eventLog = RemoteInputEventLog()
+    
+    var connectionState: RemoteInputConnectionState {
+        connection?.state ?? .disconnected
+    }
 
     func send(_ event: RemoteInputEvent) {
         if transport == nil {
