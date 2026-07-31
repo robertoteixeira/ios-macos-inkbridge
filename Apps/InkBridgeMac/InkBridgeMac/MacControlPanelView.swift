@@ -15,6 +15,8 @@ struct MacControlPanelView: View {
     let onUndo: () -> Void
     let onRedo: () -> Void
     let onAddTestStroke: () -> Void
+    let listenerStatus: String
+    let connectionStatus: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -22,6 +24,14 @@ struct MacControlPanelView: View {
                 .font(.title)
 
             Text(isOverlayVisible ? "Overlay visible" : "Overlay hidden")
+                .foregroundStyle(.secondary)
+            
+            Text("Listener: \(listenerStatus)")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            
+            Text("Connection: \(connectionStatus)")
+                .font(.caption)
                 .foregroundStyle(.secondary)
             
             VStack(alignment: .leading, spacing: 4) {
@@ -86,7 +96,9 @@ struct MacControlPanelView: View {
         onClearOverlay: {},
         onUndo: {},
         onRedo: {},
-        onAddTestStroke: {}
+        onAddTestStroke: {},
+        listenerStatus: "Disconnected",
+        connectionStatus: "Disconnected"
     )
     .padding()
 }
@@ -99,7 +111,9 @@ struct MacControlPanelView: View {
         onClearOverlay: {},
         onUndo: {},
         onRedo: {},
-        onAddTestStroke: {}
+        onAddTestStroke: {},
+        listenerStatus: "Disconnected",
+        connectionStatus: "Disconnected"
     )
     .padding()
 }

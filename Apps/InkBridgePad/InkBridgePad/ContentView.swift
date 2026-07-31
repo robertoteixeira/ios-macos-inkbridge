@@ -7,6 +7,7 @@
 
 import SwiftUI
 import InkBridgeProtocol
+import InkBridgeNetworking
 
 struct ContentView: View {
     @State private var completedStrokes: [InkStroke] = []

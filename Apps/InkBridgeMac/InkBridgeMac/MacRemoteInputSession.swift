@@ -18,6 +18,10 @@ final class MacRemoteInputSession {
 
     var eventLog = RemoteInputEventLog()
     var connectionState: RemoteInputConnectionState = .disconnected
+    
+    var listenerState: RemoteInputConnectionState {
+        listener?.state ?? .disconnected
+    }
 
     init(eventHandler: @escaping (RemoteInputEvent) -> Void) {
         self.eventHandler = eventHandler

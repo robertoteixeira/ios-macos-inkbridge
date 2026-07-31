@@ -7,6 +7,7 @@
 
 import SwiftUI
 import InkBridgeProtocol
+import InkBridgeNetworking
 
 struct ContentView: View {
     @State private var isOverlayVisible = false
@@ -35,7 +36,9 @@ struct ContentView: View {
                 replayer.replay { event in
                     session?.send(event)
                 }
-            }
+            },
+            listenerStatus: session?.listenerState.displayName ?? "Disconnected",
+            connectionStatus: session?.connectionState.displayName ?? "Disconnected"
         )
         .padding()
         .frame(minWidth: 320, minHeight: 180)
