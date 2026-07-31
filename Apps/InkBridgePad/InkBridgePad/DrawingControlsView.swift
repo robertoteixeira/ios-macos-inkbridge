@@ -16,7 +16,11 @@ struct DrawingControlsView: View {
     let onRedo: () -> Void
     let onClear: () -> Void
     let recentEvents: [String]
-    let connectionStatus: String
+    @Binding var remoteHost: String
+    let connectionStatus: String    
+    let canDisconnect: Bool
+    let onConnect: () -> Void
+    let onDisconnect: () -> Void
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
@@ -26,6 +30,22 @@ struct DrawingControlsView: View {
                 .padding(.vertical, 6)
                 .background(.thinMaterial)
                 .clipShape(Capsule())
+            
+            HStack(spacing: 8) {
+                TextField("Mac IP", text: $remoteHost)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(width: 140)
+
+                Button(action: onConnect) {
+                    Label("Connect", systemImage: "link")
+                }
+
+                Button(action: onDisconnect) {
+                    Image(systemName: "link.badge.minus")
+                }
+                .accessibilityLabel("Disconnect")
+                .disabled(!canDisconnect)
+            }
             
             Text("\(completedStrokeCount) strokes")
                 .font(.caption)
@@ -85,7 +105,11 @@ struct DrawingControlsView: View {
         onRedo: {},
         onClear: {},
         recentEvents: ["strokeEnded", "strokeMoved", "strokeBegan"],
-        connectionStatus: "Connected"
+        remoteHost: .constant("192.168.0.6"),
+        connectionStatus: "Connected",
+        canDisconnect: true,
+        onConnect: {},
+        onDisconnect: {}
     )
     .padding()
 }
@@ -100,7 +124,11 @@ struct DrawingControlsView: View {
         onRedo: {},
         onClear: {},
         recentEvents: [],
-        connectionStatus: "Disconnected"
+        remoteHost: .constant("192.168.0.6"),
+        connectionStatus: "Disconnected",
+        canDisconnect: false,
+        onConnect: {},
+        onDisconnect: {}
     )
     .padding()
 }

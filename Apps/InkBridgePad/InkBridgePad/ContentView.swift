@@ -13,6 +13,7 @@ struct ContentView: View {
     @State private var completedStrokes: [InkStroke] = []
     @State private var undoneStrokes: [InkStroke] = []
     @State private var session = PadRemoteInputSession()
+    @State private var remoteHost = RemoteInputConfiguration.host
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -37,16 +38,21 @@ struct ContentView: View {
                 onRedo: redoLastStroke,
                 onClear: clearCanvas,
                 recentEvents: session.eventLog.entries,
-                connectionStatus: session.connectionState.displayName
+                remoteHost: $remoteHost,
+                connectionStatus: session.connectionState.displayName,
+                canDisconnect: session.connectionState != .disconnected,
+                onConnect: connectToRemoteHost,
+                onDisconnect: session.disconnect
             )
             .padding()
         }
-        .onAppear {
-            session.connectToHost(
-                RemoteInputConfiguration.host,
-                port: RemoteInputConfiguration.port
-            )
-        }
+    }
+    
+    private func connectToRemoteHost() {
+        session.connectToHost(
+            remoteHost,
+            port: RemoteInputConfiguration.port
+        )
     }
     
     private func undoLastStroke() {

@@ -48,6 +48,13 @@ final class PadRemoteInputSession {
         connection.start()
         connectionState = connection.state
     }
+    
+    func disconnect() {
+        connection?.stop()
+        connection = nil
+        transport = nil
+        connectionState = .disconnected
+    }
 
     private func makeLocalTransport() -> RemoteInputTransport {
         LocalRemoteInputTransport { _ in }
