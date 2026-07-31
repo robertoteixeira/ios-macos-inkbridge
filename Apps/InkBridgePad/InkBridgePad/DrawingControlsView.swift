@@ -16,9 +16,17 @@ struct DrawingControlsView: View {
     let onRedo: () -> Void
     let onClear: () -> Void
     let recentEvents: [String]
+    let connectionStatus: String
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
+            Text(connectionStatus)
+                .font(.caption)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(.thinMaterial)
+                .clipShape(Capsule())
+            
             Text("\(completedStrokeCount) strokes")
                 .font(.caption)
                 .padding(.horizontal, 10)
@@ -76,7 +84,8 @@ struct DrawingControlsView: View {
         onUndo: {},
         onRedo: {},
         onClear: {},
-        recentEvents: ["strokeEnded", "strokeMoved", "strokeBegan"]
+        recentEvents: ["strokeEnded", "strokeMoved", "strokeBegan"],
+        connectionStatus: "Connected"
     )
     .padding()
 }
@@ -90,7 +99,8 @@ struct DrawingControlsView: View {
         onUndo: {},
         onRedo: {},
         onClear: {},
-        recentEvents: []
+        recentEvents: [],
+        connectionStatus: "Disconnected"
     )
     .padding()
 }

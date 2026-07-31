@@ -35,7 +35,8 @@ struct ContentView: View {
                 onUndo: undoLastStroke,
                 onRedo: redoLastStroke,
                 onClear: clearCanvas,
-                recentEvents: session.eventLog.entries
+                recentEvents: session.eventLog.entries,
+                connectionStatus: session.connectionState.displayName
             )
             .padding()
         }
