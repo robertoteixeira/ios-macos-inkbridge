@@ -16,9 +16,7 @@ final class PadRemoteInputSession {
 
     var eventLog = RemoteInputEventLog()
     
-    var connectionState: RemoteInputConnectionState {
-        connection?.state ?? .disconnected
-    }
+    var connectionState: RemoteInputConnectionState = .disconnected
 
     func send(_ event: RemoteInputEvent) {
         if transport == nil {
@@ -34,6 +32,8 @@ final class PadRemoteInputSession {
             return
         }
         
+        connectionState = .connecting
+        
         let connection = NetworkRemoteInputConnectionFactory.makeHostConnection(
             host: host,
             port: port
@@ -43,6 +43,7 @@ final class PadRemoteInputSession {
         transport = FramedRemoteInputTransport(byteTransport: connection)
 
         connection.start()
+        connectionState = connection.state
     }
 
     private func makeLocalTransport() -> RemoteInputTransport {
