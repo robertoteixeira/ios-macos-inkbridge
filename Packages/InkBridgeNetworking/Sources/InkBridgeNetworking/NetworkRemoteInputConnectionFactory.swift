@@ -5,7 +5,8 @@ import Network
 public enum NetworkRemoteInputConnectionFactory {
     public static func makeHostConnection(
         host: String,
-        port: UInt16
+        port: UInt16,
+        onStateChange: ((RemoteInputConnectionState) -> Void)? = nil
     ) -> NetworkRemoteInputConnection {
         let endpoint = NWEndpoint.Host(host)
         let port = NWEndpoint.Port(rawValue: port) ?? .any
@@ -15,6 +16,6 @@ public enum NetworkRemoteInputConnectionFactory {
             using: .tcp
         )
 
-        return NetworkRemoteInputConnection(connection: connection)
+        return NetworkRemoteInputConnection(connection: connection, onStateChange: onStateChange)
     }
 }

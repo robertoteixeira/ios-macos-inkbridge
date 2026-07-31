@@ -36,7 +36,10 @@ final class PadRemoteInputSession {
         
         let connection = NetworkRemoteInputConnectionFactory.makeHostConnection(
             host: host,
-            port: port
+            port: port,
+            onStateChange: { [weak self] state in
+                self?.connectionState = state
+            }
         )
 
         self.connection = connection

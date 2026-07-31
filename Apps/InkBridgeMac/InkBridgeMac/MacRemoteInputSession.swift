@@ -17,6 +17,7 @@ final class MacRemoteInputSession {
     private var connection: RemoteInputConnection?
 
     var eventLog = RemoteInputEventLog()
+    var connectionState: RemoteInputConnectionState = .disconnected
 
     init(eventHandler: @escaping (RemoteInputEvent) -> Void) {
         self.eventHandler = eventHandler
@@ -40,6 +41,7 @@ final class MacRemoteInputSession {
                 port: port,
                 onConnection: { [weak self] connection in
                     self?.connection = connection
+                    self?.connectionState = connection.state
                     connection.start()
                 },
                 onEvent: { [weak self] event in

@@ -5,19 +5,22 @@ import Network
 public final class NetworkRemoteInputConnection: RemoteInputConnection, @unchecked Sendable {
     private let connection: NWConnection
     private let onData: ((Data) -> Void)?
+    private let onStateChange: ((RemoteInputConnectionState) -> Void)?
 
     public private(set) var state: RemoteInputConnectionState = .disconnected
 
     public init(
         connection: NWConnection,
-        onData: ((Data) -> Void)? = nil
+        onData: ((Data) -> Void)? = nil,
+        onStateChange: ((RemoteInputConnectionState) -> Void)? = nil
     ) {
         self.connection = connection
         self.onData = onData
+        self.onStateChange = onStateChange
     }
 
     public func start() {
-        state = .connecting
+        updateState(.connecting)
 
         connection.stateUpdateHandler = { [weak self] state in
             self?.handle(state)
@@ -29,7 +32,7 @@ public final class NetworkRemoteInputConnection: RemoteInputConnection, @uncheck
 
     public func stop() {
         connection.cancel()
-        state = .disconnected
+        updateState(.disconnected)
     }
 
     public func send(_ data: Data) {
@@ -37,7 +40,7 @@ public final class NetworkRemoteInputConnection: RemoteInputConnection, @uncheck
             content: data,
             completion: .contentProcessed { [weak self] error in
                 if let error {
-                    self?.state = .failed(error.localizedDescription)
+                    self?.updateState(.failed(error.localizedDescription))
                 }
             }
         )
@@ -53,12 +56,12 @@ public final class NetworkRemoteInputConnection: RemoteInputConnection, @uncheck
             }
 
             if let error {
-                self?.state = .failed(error.localizedDescription)
+                self?.updateState(.failed(error.localizedDescription))
                 return
             }
 
             if isComplete {
-                self?.state = .disconnected
+                self?.updateState(.disconnected)
                 return
             }
 
@@ -69,19 +72,24 @@ public final class NetworkRemoteInputConnection: RemoteInputConnection, @uncheck
     private func handle(_ nwState: NWConnection.State) {
         switch nwState {
         case .setup:
-            state = .disconnected
+            updateState(.disconnected)
         case .waiting(let error):
-            state = .failed(error.localizedDescription)
+            updateState(.failed(error.localizedDescription))
         case .preparing:
-            state = .connecting
+            updateState(.connecting)
         case .ready:
-            state = .connected
+            updateState(.connected)
         case .failed(let error):
-            state = .failed(error.localizedDescription)
+            updateState(.failed(error.localizedDescription))
         case .cancelled:
-            state = .disconnected
+            updateState(.disconnected)
         @unknown default:
-            state = .failed("Unknown connection state")
+            updateState(.failed("Unknown connection state"))
         }
+    }
+
+    private func updateState(_ state: RemoteInputConnectionState) {
+        self.state = state
+        onStateChange?(state)
     }
 }
