@@ -64,6 +64,16 @@ final class MacRemoteInputSession {
             listenerState = .failed(error.localizedDescription)
         }
     }
+    
+    func stopListening() {
+        connection?.stop()
+        listener?.stop()
+
+        connection = nil
+        listener = nil
+        connectionState = .disconnected
+        listenerState = .disconnected
+    }
 
     private func makeLocalTransport() -> RemoteInputTransport {
         LocalRemoteInputTransport { [weak self] event in

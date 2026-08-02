@@ -49,16 +49,15 @@ struct ContentView: View {
 
         if isOverlayVisible {
             if session == nil {
-                let session = MacRemoteInputSession { event in
+                session = MacRemoteInputSession { event in
                     overlayWindowController.handle(event)
                 }
-                
-                session.startListening()
-                self.session = session
             }
 
+            session?.startListening()
             overlayWindowController.showOverlay()
         } else {
+            session?.stopListening()
             overlayWindowController.hideOverlay()
         }
     }
