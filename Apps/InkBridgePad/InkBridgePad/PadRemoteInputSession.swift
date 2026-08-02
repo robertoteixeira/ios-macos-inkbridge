@@ -28,8 +28,13 @@ final class PadRemoteInputSession {
     }
     
     func connectToHost(_ host: String, port: UInt16 = 9876) {
-        guard connection == nil else {
-            return
+        if connection != nil {
+            switch connectionState {
+            case .disconnected, .failed:
+                disconnect()
+            case .connecting, .connected:
+                return
+            }
         }
         
         connectionState = .connecting

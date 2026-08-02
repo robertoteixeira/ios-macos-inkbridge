@@ -7,8 +7,8 @@ public extension RemoteInputConnectionState {
             "Connecting"
         case .connected:
             "Connected"
-        case .failed:
-            "Failed"
+        case .failed(let message):
+            "Failed: \(message)"
         }
     }
 }

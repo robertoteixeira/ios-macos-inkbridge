@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var undoneStrokes: [InkStroke] = []
     @State private var session = PadRemoteInputSession()
     @State private var remoteHost = RemoteInputConfiguration.host
+    @FocusState private var isRemoteHostFocused: Bool
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -41,7 +42,8 @@ struct ContentView: View {
                 recentEvents: session.eventLog.entries,
                 remoteHost: $remoteHost,
                 connectionStatus: session.connectionState.displayName,
-                canConnect: session.connectionState == .disconnected && !remoteHost.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                isRemoteHostFocused: $isRemoteHostFocused,
+                canConnect: canConnectToRemoteHost,
                 canDisconnect: session.connectionState != .disconnected,
                 onConnect: connectToRemoteHost,
                 onDisconnect: session.disconnect
@@ -50,7 +52,20 @@ struct ContentView: View {
         }
     }
     
+    private var canConnectToRemoteHost: Bool {
+        let host = remoteHost.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        switch session.connectionState {
+        case .disconnected, .failed:
+            return !host.isEmpty
+        case .connecting, .connected:
+            return false
+        }
+    }
+
     private func connectToRemoteHost() {
+        isRemoteHostFocused = false
+
         let host = remoteHost.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !host.isEmpty else {

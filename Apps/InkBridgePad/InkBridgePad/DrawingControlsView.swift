@@ -18,6 +18,7 @@ struct DrawingControlsView: View {
     let recentEvents: [String]
     @Binding var remoteHost: String
     let connectionStatus: String
+    let isRemoteHostFocused: FocusState<Bool>.Binding
     let canConnect: Bool
     let canDisconnect: Bool
     let onConnect: () -> Void
@@ -35,6 +36,12 @@ struct DrawingControlsView: View {
             HStack(spacing: 8) {
                 TextField("Mac IP", text: $remoteHost)
                     .textFieldStyle(.roundedBorder)
+                    .keyboardType(.numbersAndPunctuation)
+                    .submitLabel(.done)
+                    .focused(isRemoteHostFocused)
+                    .onSubmit {
+                        isRemoteHostFocused.wrappedValue = false
+                    }
                     .frame(width: 140)
 
                 Button(action: onConnect) {
@@ -94,11 +101,20 @@ struct DrawingControlsView: View {
             }
             .buttonStyle(.borderedProminent)
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+
+                Button("Done") {
+                    isRemoteHostFocused.wrappedValue = false
+                }
+            }
+        }
     }
 }
 
 #Preview("Enabled") {
-    DrawingControlsView(
+    DrawingControlsPreview(
         completedStrokeCount: 3,
         undoneStrokeCount: 1,
         canUndo: true,
@@ -107,7 +123,6 @@ struct DrawingControlsView: View {
         onRedo: {},
         onClear: {},
         recentEvents: ["strokeEnded", "strokeMoved", "strokeBegan"],
-        remoteHost: .constant("192.168.0.6"),
         connectionStatus: "Connected",
         canConnect: false,
         canDisconnect: true,
@@ -118,7 +133,7 @@ struct DrawingControlsView: View {
 }
 
 #Preview("Empty") {
-    DrawingControlsView(
+    DrawingControlsPreview(
         completedStrokeCount: 0,
         undoneStrokeCount: 0,
         canUndo: false,
@@ -127,7 +142,6 @@ struct DrawingControlsView: View {
         onRedo: {},
         onClear: {},
         recentEvents: [],
-        remoteHost: .constant("192.168.0.6"),
         connectionStatus: "Disconnected",
         canConnect: true,
         canDisconnect: false,
@@ -135,4 +149,43 @@ struct DrawingControlsView: View {
         onDisconnect: {}
     )
     .padding()
+}
+
+private struct DrawingControlsPreview: View {
+    let completedStrokeCount: Int
+    let undoneStrokeCount: Int
+    let canUndo: Bool
+    let canRedo: Bool
+    let onUndo: () -> Void
+    let onRedo: () -> Void
+    let onClear: () -> Void
+    let recentEvents: [String]
+    let connectionStatus: String
+    let canConnect: Bool
+    let canDisconnect: Bool
+    let onConnect: () -> Void
+    let onDisconnect: () -> Void
+
+    @State private var remoteHost = "192.168.0.6"
+    @FocusState private var isRemoteHostFocused: Bool
+
+    var body: some View {
+        DrawingControlsView(
+            completedStrokeCount: completedStrokeCount,
+            undoneStrokeCount: undoneStrokeCount,
+            canUndo: canUndo,
+            canRedo: canRedo,
+            onUndo: onUndo,
+            onRedo: onRedo,
+            onClear: onClear,
+            recentEvents: recentEvents,
+            remoteHost: $remoteHost,
+            connectionStatus: connectionStatus,
+            isRemoteHostFocused: $isRemoteHostFocused,
+            canConnect: canConnect,
+            canDisconnect: canDisconnect,
+            onConnect: onConnect,
+            onDisconnect: onDisconnect
+        )
+    }
 }
