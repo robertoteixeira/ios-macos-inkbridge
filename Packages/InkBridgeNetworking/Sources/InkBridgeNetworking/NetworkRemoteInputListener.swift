@@ -7,6 +7,7 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
     private let onConnection: (RemoteInputConnection) -> Void
     private let onData: (Data) -> Void
     private let onConnectionStateChange: ((RemoteInputConnectionState) -> Void)?
+    private let onStateChange: ((RemoteInputConnectionState) -> Void)?
 
     public private(set) var state: RemoteInputConnectionState = .disconnected
 
@@ -14,7 +15,8 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
         port: UInt16,
         onConnection: @escaping (RemoteInputConnection) -> Void,
         onData: @escaping (Data) -> Void,
-        onConnectionStateChange: ((RemoteInputConnectionState) -> Void)? = nil
+        onConnectionStateChange: ((RemoteInputConnectionState) -> Void)? = nil,
+        onStateChange: ((RemoteInputConnectionState) -> Void)? = nil
     ) throws {
         let port = NWEndpoint.Port(rawValue: port) ?? .any
 
@@ -25,10 +27,11 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
         self.onConnection = onConnection
         self.onData = onData
         self.onConnectionStateChange = onConnectionStateChange
+        self.onStateChange = onStateChange
     }
 
     public func start() {
-        state = .connecting
+        updateState(.connecting)
 
         listener.stateUpdateHandler = { [weak self] state in
             self?.handle(state)
@@ -48,23 +51,28 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
 
     public func stop() {
         listener.cancel()
-        state = .disconnected
+        updateState(.disconnected)
     }
 
     private func handle(_ nwState: NWListener.State) {
         switch nwState {
         case .setup:
-            state = .disconnected
+            updateState(.disconnected)
         case .waiting(let error):
-            state = .failed(error.localizedDescription)
+            updateState(.failed(error.localizedDescription))
         case .ready:
-            state = .connected
+            updateState(.connected)
         case .failed(let error):
-            state = .failed(error.localizedDescription)
+            updateState(.failed(error.localizedDescription))
         case .cancelled:
-            state = .disconnected
+            updateState(.disconnected)
         @unknown default:
-            state = .failed("Unknown listener state")
+            updateState(.failed("Unknown listener state"))
         }
+    }
+
+    private func updateState(_ state: RemoteInputConnectionState) {
+        self.state = state
+        onStateChange?(state)
     }
 }

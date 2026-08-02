@@ -14,7 +14,8 @@ public final class NetworkRemoteInputEventListener: RemoteInputListener {
         port: UInt16,
         onConnection: @escaping (RemoteInputConnection) -> Void,
         onEvent: @escaping (RemoteInputEvent) -> Void,
-        onConnectionStateChange: ((RemoteInputConnectionState) -> Void)? = nil
+        onConnectionStateChange: ((RemoteInputConnectionState) -> Void)? = nil,
+        onListenerStateChange: ((RemoteInputConnectionState) -> Void)? = nil
     ) throws {
         let eventReceiver = RemoteInputEventReceiver(onEvent: onEvent)
 
@@ -25,7 +26,8 @@ public final class NetworkRemoteInputEventListener: RemoteInputListener {
             onData: { data in
                 try? eventReceiver.receive(data)
             },
-            onConnectionStateChange: onConnectionStateChange
+            onConnectionStateChange: onConnectionStateChange,
+            onStateChange: onListenerStateChange
         )
     }
 

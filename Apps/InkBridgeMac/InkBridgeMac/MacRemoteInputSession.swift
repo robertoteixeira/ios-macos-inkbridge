@@ -18,10 +18,7 @@ final class MacRemoteInputSession {
 
     var eventLog = RemoteInputEventLog()
     var connectionState: RemoteInputConnectionState = .disconnected
-    
-    var listenerState: RemoteInputConnectionState {
-        listener?.state ?? .disconnected
-    }
+    var listenerState: RemoteInputConnectionState = .disconnected
 
     init(eventHandler: @escaping (RemoteInputEvent) -> Void) {
         self.eventHandler = eventHandler
@@ -41,6 +38,7 @@ final class MacRemoteInputSession {
         }
         
         do {
+            listenerState = .connecting
             let listener = try NetworkRemoteInputEventListener(
                 port: port,
                 onConnection: { [weak self] connection in
@@ -53,6 +51,9 @@ final class MacRemoteInputSession {
                 },
                 onConnectionStateChange: { [weak self] state in
                     self?.connectionState = state
+                },
+                onListenerStateChange: { [weak self] state in
+                    self?.listenerState = state
                 }
             )
             
@@ -60,6 +61,7 @@ final class MacRemoteInputSession {
             listener.start()
         } catch {
             eventLog = eventLog.adding(.modeChanged(.overlay))
+            listenerState = .failed(error.localizedDescription)
         }
     }
 
