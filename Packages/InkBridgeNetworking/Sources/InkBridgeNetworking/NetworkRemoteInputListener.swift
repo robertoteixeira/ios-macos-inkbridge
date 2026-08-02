@@ -6,13 +6,15 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
     private let listener: NWListener
     private let onConnection: (RemoteInputConnection) -> Void
     private let onData: (Data) -> Void
+    private let onConnectionStateChange: ((RemoteInputConnectionState) -> Void)?
 
     public private(set) var state: RemoteInputConnectionState = .disconnected
 
     public init(
         port: UInt16,
         onConnection: @escaping (RemoteInputConnection) -> Void,
-        onData: @escaping (Data) -> Void
+        onData: @escaping (Data) -> Void,
+        onConnectionStateChange: ((RemoteInputConnectionState) -> Void)? = nil
     ) throws {
         let port = NWEndpoint.Port(rawValue: port) ?? .any
 
@@ -22,6 +24,7 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
         )
         self.onConnection = onConnection
         self.onData = onData
+        self.onConnectionStateChange = onConnectionStateChange
     }
 
     public func start() {
@@ -34,7 +37,8 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
         listener.newConnectionHandler = { [weak self] connection in
             let remoteConnection = NetworkRemoteInputConnection(
                 connection: connection,
-                onData: self?.onData
+                onData: self?.onData,
+                onStateChange: self?.onConnectionStateChange
             )
             self?.onConnection(remoteConnection)
         }

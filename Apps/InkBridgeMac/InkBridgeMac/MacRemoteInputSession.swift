@@ -50,6 +50,9 @@ final class MacRemoteInputSession {
                 },
                 onEvent: { [weak self] event in
                     self?.handle(event)
+                },
+                onConnectionStateChange: { [weak self] state in
+                    self?.connectionState = state
                 }
             )
             
