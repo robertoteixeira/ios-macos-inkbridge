@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 import InkBridgeProtocol
 import InkBridgeNetworking
 
@@ -40,6 +41,7 @@ struct ContentView: View {
                 recentEvents: session.eventLog.entries,
                 remoteHost: $remoteHost,
                 connectionStatus: session.connectionState.displayName,
+                canConnect: session.connectionState == .disconnected && !remoteHost.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                 canDisconnect: session.connectionState != .disconnected,
                 onConnect: connectToRemoteHost,
                 onDisconnect: session.disconnect
@@ -49,8 +51,14 @@ struct ContentView: View {
     }
     
     private func connectToRemoteHost() {
+        let host = remoteHost.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !host.isEmpty else {
+            return
+        }
+        
         session.connectToHost(
-            remoteHost,
+            host,
             port: RemoteInputConfiguration.port
         )
     }

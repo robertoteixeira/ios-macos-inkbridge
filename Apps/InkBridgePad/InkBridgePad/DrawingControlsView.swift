@@ -17,7 +17,8 @@ struct DrawingControlsView: View {
     let onClear: () -> Void
     let recentEvents: [String]
     @Binding var remoteHost: String
-    let connectionStatus: String    
+    let connectionStatus: String
+    let canConnect: Bool
     let canDisconnect: Bool
     let onConnect: () -> Void
     let onDisconnect: () -> Void
@@ -39,6 +40,7 @@ struct DrawingControlsView: View {
                 Button(action: onConnect) {
                     Label("Connect", systemImage: "link")
                 }
+                .disabled(!canConnect)
 
                 Button(action: onDisconnect) {
                     Image(systemName: "link.badge.minus")
@@ -107,6 +109,7 @@ struct DrawingControlsView: View {
         recentEvents: ["strokeEnded", "strokeMoved", "strokeBegan"],
         remoteHost: .constant("192.168.0.6"),
         connectionStatus: "Connected",
+        canConnect: false,
         canDisconnect: true,
         onConnect: {},
         onDisconnect: {}
@@ -126,6 +129,7 @@ struct DrawingControlsView: View {
         recentEvents: [],
         remoteHost: .constant("192.168.0.6"),
         connectionStatus: "Disconnected",
+        canConnect: true,
         canDisconnect: false,
         onConnect: {},
         onDisconnect: {}
