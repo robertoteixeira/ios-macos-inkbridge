@@ -32,7 +32,7 @@ final class MacRemoteInputSession {
         transport?.send(event)
     }
     
-    func startListening(port: UInt16 = 9876) {
+    func startListening(port: UInt16 = RemoteInputNetworkDefaults.port) {
         guard listener == nil else {
             return
         }

@@ -27,7 +27,7 @@ final class PadRemoteInputSession {
         transport?.send(event)
     }
     
-    func connectToHost(_ host: String, port: UInt16 = 9876) {
+    func connectToHost(_ host: String, port: UInt16 = RemoteInputNetworkDefaults.port) {
         if connection != nil {
             switch connectionState {
             case .disconnected, .failed:
