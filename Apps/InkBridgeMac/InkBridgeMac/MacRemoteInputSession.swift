@@ -41,6 +41,8 @@ final class MacRemoteInputSession {
             listenerState = .connecting
             let listener = try NetworkRemoteInputEventListener(
                 port: port,
+                serviceName: RemoteInputServiceDefaults.name,
+                serviceType: RemoteInputServiceDefaults.type,
                 onConnection: { [weak self] connection in
                     self?.connection = connection
                     self?.connectionState = connection.state

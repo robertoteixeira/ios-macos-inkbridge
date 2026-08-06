@@ -13,6 +13,8 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
 
     public init(
         port: UInt16,
+        serviceName: String? = nil,
+        serviceType: String? = nil,
         onConnection: @escaping (RemoteInputConnection) -> Void,
         onData: @escaping (Data) -> Void,
         onConnectionStateChange: ((RemoteInputConnectionState) -> Void)? = nil,
@@ -28,6 +30,13 @@ public final class NetworkRemoteInputListener: RemoteInputListener, @unchecked S
         self.onData = onData
         self.onConnectionStateChange = onConnectionStateChange
         self.onStateChange = onStateChange
+
+        if let serviceName, let serviceType {
+            self.listener.service = NWListener.Service(
+                name: serviceName,
+                type: serviceType
+            )
+        }
     }
 
     public func start() {

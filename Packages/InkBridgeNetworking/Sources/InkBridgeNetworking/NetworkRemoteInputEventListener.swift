@@ -12,6 +12,8 @@ public final class NetworkRemoteInputEventListener: RemoteInputListener {
 
     public init(
         port: UInt16,
+        serviceName: String? = nil,
+        serviceType: String? = nil,
         onConnection: @escaping (RemoteInputConnection) -> Void,
         onEvent: @escaping (RemoteInputEvent) -> Void,
         onConnectionStateChange: ((RemoteInputConnectionState) -> Void)? = nil,
@@ -22,6 +24,8 @@ public final class NetworkRemoteInputEventListener: RemoteInputListener {
         self.eventReceiver = eventReceiver
         self.listener = try NetworkRemoteInputListener(
             port: port,
+            serviceName: serviceName,
+            serviceType: serviceType,
             onConnection: onConnection,
             onData: { data in
                 try? eventReceiver.receive(data)
