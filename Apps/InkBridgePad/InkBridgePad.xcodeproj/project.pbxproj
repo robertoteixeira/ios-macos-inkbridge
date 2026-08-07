@@ -35,9 +35,22 @@
 		03362BB32FFBF00A003486F2 /* InkBridgePadUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InkBridgePadUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		030FD60530269E9800FF1FF2 /* Exceptions for "InkBridgePad" folder in "InkBridgePad" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 03362B9B2FFBF008003486F2 /* InkBridgePad */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		03362B9E2FFBF008003486F2 /* InkBridgePad */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				030FD60530269E9800FF1FF2 /* Exceptions for "InkBridgePad" folder in "InkBridgePad" target */,
+			);
 			path = InkBridgePad;
 			sourceTree = "<group>";
 		};
@@ -418,6 +431,8 @@
 				DEVELOPMENT_TEAM = QUFDSU77H7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InkBridgePad/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Discover nearby InkBridge Mac listeners.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -451,6 +466,8 @@
 				DEVELOPMENT_TEAM = QUFDSU77H7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = InkBridgePad/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Discover nearby InkBridge Mac listeners.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

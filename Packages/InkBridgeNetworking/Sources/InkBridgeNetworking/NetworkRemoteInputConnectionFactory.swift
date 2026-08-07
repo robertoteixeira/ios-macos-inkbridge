@@ -1,7 +1,7 @@
 import Foundation
 import Network
 
-@available(macOS 10.14, iOS 12.0, *)
+@available(macOS 10.15, iOS 13.0, *)
 public enum NetworkRemoteInputConnectionFactory {
     public static func makeHostConnection(
         host: String,
@@ -17,5 +17,20 @@ public enum NetworkRemoteInputConnectionFactory {
         )
 
         return NetworkRemoteInputConnection(connection: connection, onStateChange: onStateChange)
+    }
+    
+    public static func makeConnection(
+        to service: RemoteInputDiscoveredService,
+        onStateChange: ((RemoteInputConnectionState) -> Void)? = nil
+    ) -> NetworkRemoteInputConnection {
+        let connection = NWConnection(
+            to: service.endpoint,
+            using: .tcp
+        )
+
+        return NetworkRemoteInputConnection(
+            connection: connection,
+            onStateChange: onStateChange
+        )
     }
 }
