@@ -46,9 +46,14 @@ struct ContentView: View {
                 canConnect: canConnectToRemoteHost,
                 canDisconnect: session.connectionState != .disconnected,
                 onConnect: connectToRemoteHost,
-                onDisconnect: session.disconnect
+                onDisconnect: session.disconnect,
+                discoveredServiceNames: session.discoveredServices.map(\.name),
+                onConnectToDiscoveredService: connectToDiscoveredService
             )
             .padding()
+        }
+        .onAppear {
+            session.startBrowsingForRemoteInputs()
         }
     }
     
@@ -76,6 +81,15 @@ struct ContentView: View {
             host,
             port: RemoteInputConfiguration.port
         )
+    }
+
+    private func connectToDiscoveredService(named serviceName: String) {
+        guard let service = session.discoveredServices.first(where: { $0.name == serviceName }) else {
+            return
+        }
+
+        isRemoteHostFocused = false
+        session.connect(to: service)
     }
     
     private func undoLastStroke() {

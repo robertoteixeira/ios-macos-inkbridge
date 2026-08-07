@@ -23,6 +23,8 @@ struct DrawingControlsView: View {
     let canDisconnect: Bool
     let onConnect: () -> Void
     let onDisconnect: () -> Void
+    let discoveredServiceNames: [String]
+    let onConnectToDiscoveredService: (String) -> Void
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
@@ -54,6 +56,19 @@ struct DrawingControlsView: View {
                 }
                 .accessibilityLabel("Disconnect")
                 .disabled(!canDisconnect)
+            }
+
+            if !discoveredServiceNames.isEmpty {
+                VStack(alignment: .trailing, spacing: 4) {
+                    ForEach(discoveredServiceNames, id: \.self) { serviceName in
+                        Button(action: {
+                            onConnectToDiscoveredService(serviceName)
+                        }) {
+                            Label(serviceName, systemImage: "desktopcomputer")
+                        }
+                        .disabled(!canConnect)
+                    }
+                }
             }
             
             Text("\(completedStrokeCount) strokes")
@@ -127,7 +142,9 @@ struct DrawingControlsView: View {
         canConnect: false,
         canDisconnect: true,
         onConnect: {},
-        onDisconnect: {}
+        onDisconnect: {},
+        discoveredServiceNames: ["InkBridge Mac"],
+        onConnectToDiscoveredService: { _ in }
     )
     .padding()
 }
@@ -146,7 +163,9 @@ struct DrawingControlsView: View {
         canConnect: true,
         canDisconnect: false,
         onConnect: {},
-        onDisconnect: {}
+        onDisconnect: {},
+        discoveredServiceNames: [],
+        onConnectToDiscoveredService: { _ in }
     )
     .padding()
 }
@@ -165,6 +184,8 @@ private struct DrawingControlsPreview: View {
     let canDisconnect: Bool
     let onConnect: () -> Void
     let onDisconnect: () -> Void
+    let discoveredServiceNames: [String]
+    let onConnectToDiscoveredService: (String) -> Void
 
     @State private var remoteHost = "192.168.0.6"
     @FocusState private var isRemoteHostFocused: Bool
@@ -185,7 +206,9 @@ private struct DrawingControlsPreview: View {
             canConnect: canConnect,
             canDisconnect: canDisconnect,
             onConnect: onConnect,
-            onDisconnect: onDisconnect
+            onDisconnect: onDisconnect,
+            discoveredServiceNames: discoveredServiceNames,
+            onConnectToDiscoveredService: onConnectToDiscoveredService
         )
     }
 }
