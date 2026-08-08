@@ -23,8 +23,8 @@ struct DrawingControlsView: View {
     let canDisconnect: Bool
     let onConnect: () -> Void
     let onDisconnect: () -> Void
-    let discoveredServiceNames: [String]
-    let onConnectToDiscoveredService: (String) -> Void
+    let discoveredServices: [DiscoveredRemoteInputServiceItem]
+    let onConnectToDiscoveredService: (DiscoveredRemoteInputServiceItem) -> Void
     let browserStatus: String
 
     var body: some View {
@@ -63,13 +63,13 @@ struct DrawingControlsView: View {
                 .disabled(!canDisconnect)
             }
 
-            if !discoveredServiceNames.isEmpty {
+            if !discoveredServices.isEmpty {
                 VStack(alignment: .trailing, spacing: 4) {
-                    ForEach(discoveredServiceNames, id: \.self) { serviceName in
+                    ForEach(discoveredServices) { service in
                         Button(action: {
-                            onConnectToDiscoveredService(serviceName)
+                            onConnectToDiscoveredService(service)
                         }) {
-                            Label(serviceName, systemImage: "desktopcomputer")
+                            Label(service.name, systemImage: "desktopcomputer")
                         }
                         .disabled(!canConnect)
                     }
@@ -215,8 +215,10 @@ private struct DrawingControlsPreview: View {
             canDisconnect: canDisconnect,
             onConnect: onConnect,
             onDisconnect: onDisconnect,
-            discoveredServiceNames: discoveredServiceNames,
-            onConnectToDiscoveredService: onConnectToDiscoveredService,
+            discoveredServices: [
+                DiscoveredRemoteInputServiceItem(id: "InkBridge Mac", name: "InkBridge Mac")
+            ],
+            onConnectToDiscoveredService: { _ in },
             browserStatus: browserStatus
         )
     }

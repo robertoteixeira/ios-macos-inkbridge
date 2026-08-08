@@ -47,7 +47,12 @@ struct ContentView: View {
                 canDisconnect: session.connectionState != .disconnected,
                 onConnect: connectToRemoteHost,
                 onDisconnect: session.disconnect,
-                discoveredServiceNames: session.discoveredServices.map(\.name),
+                discoveredServices: session.discoveredServices.map { service in
+                    DiscoveredRemoteInputServiceItem(
+                        id: service.id,
+                        name: service.name
+                    )
+                },
                 onConnectToDiscoveredService: connectToDiscoveredService,
                 browserStatus: session.browserState.displayName
             )
@@ -84,8 +89,8 @@ struct ContentView: View {
         )
     }
 
-    private func connectToDiscoveredService(named serviceName: String) {
-        guard let service = session.discoveredServices.first(where: { $0.name == serviceName }) else {
+    private func connectToDiscoveredService(_ item: DiscoveredRemoteInputServiceItem) {
+        guard let service = session.discoveredServices.first(where: { $0.id == item.name }) else {
             return
         }
 
