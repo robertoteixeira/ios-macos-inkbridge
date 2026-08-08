@@ -48,7 +48,8 @@ struct ContentView: View {
                 onConnect: connectToRemoteHost,
                 onDisconnect: session.disconnect,
                 discoveredServiceNames: session.discoveredServices.map(\.name),
-                onConnectToDiscoveredService: connectToDiscoveredService
+                onConnectToDiscoveredService: connectToDiscoveredService,
+                browserStatus: session.browserState.displayName
             )
             .padding()
         }

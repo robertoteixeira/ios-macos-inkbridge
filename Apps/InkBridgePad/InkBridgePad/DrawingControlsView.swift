@@ -25,6 +25,7 @@ struct DrawingControlsView: View {
     let onDisconnect: () -> Void
     let discoveredServiceNames: [String]
     let onConnectToDiscoveredService: (String) -> Void
+    let browserStatus: String
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
@@ -34,6 +35,10 @@ struct DrawingControlsView: View {
                 .padding(.vertical, 6)
                 .background(.thinMaterial)
                 .clipShape(Capsule())
+            
+            Text("Discovery: \(browserStatus)")
+                .font(.caption)
+                .foregroundStyle(.secondary)
             
             HStack(spacing: 8) {
                 TextField("Mac IP", text: $remoteHost)
@@ -144,7 +149,8 @@ struct DrawingControlsView: View {
         onConnect: {},
         onDisconnect: {},
         discoveredServiceNames: ["InkBridge Mac"],
-        onConnectToDiscoveredService: { _ in }
+        onConnectToDiscoveredService: { _ in },
+        browserStatus: "Connected"
     )
     .padding()
 }
@@ -165,7 +171,8 @@ struct DrawingControlsView: View {
         onConnect: {},
         onDisconnect: {},
         discoveredServiceNames: [],
-        onConnectToDiscoveredService: { _ in }
+        onConnectToDiscoveredService: { _ in },
+        browserStatus: "Disconnected"
     )
     .padding()
 }
@@ -186,6 +193,7 @@ private struct DrawingControlsPreview: View {
     let onDisconnect: () -> Void
     let discoveredServiceNames: [String]
     let onConnectToDiscoveredService: (String) -> Void
+    let browserStatus: String
 
     @State private var remoteHost = "192.168.0.6"
     @FocusState private var isRemoteHostFocused: Bool
@@ -208,7 +216,8 @@ private struct DrawingControlsPreview: View {
             onConnect: onConnect,
             onDisconnect: onDisconnect,
             discoveredServiceNames: discoveredServiceNames,
-            onConnectToDiscoveredService: onConnectToDiscoveredService
+            onConnectToDiscoveredService: onConnectToDiscoveredService,
+            browserStatus: browserStatus
         )
     }
 }

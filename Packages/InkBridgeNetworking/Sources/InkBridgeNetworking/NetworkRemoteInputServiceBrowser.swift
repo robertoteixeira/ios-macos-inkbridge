@@ -73,17 +73,24 @@ public final class NetworkRemoteInputServiceBrowser: @unchecked Sendable {
     }
     
     private func updateServices(from results: Set<NWBrowser.Result>) {
-        services = results.compactMap { result in
+        var servicesByName: [String: RemoteInputDiscoveredService] = [:]
+
+        for result in results {
             guard case .service(let name, _, _, _) = result.endpoint else {
-                return nil
+                continue
             }
 
-            return RemoteInputDiscoveredService(
-                endpoint: result.endpoint,
-                name: name
-            )
+            if servicesByName[name] == nil {
+                servicesByName[name] = RemoteInputDiscoveredService(
+                    endpoint: result.endpoint,
+                    name: name
+                )
+            }
         }
-        .sorted { $0.name < $1.name }
+
+        services = servicesByName.values.sorted { first, second in
+            first.name < second.name
+        }
 
         onServicesChanged(services)
     }
