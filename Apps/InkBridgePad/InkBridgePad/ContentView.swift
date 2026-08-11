@@ -90,7 +90,7 @@ struct ContentView: View {
     }
 
     private func connectToDiscoveredService(_ item: DiscoveredRemoteInputServiceItem) {
-        guard let service = session.discoveredServices.first(where: { $0.id == item.name }) else {
+        guard let service = session.discoveredServices.first(where: { $0.id == item.id }) else {
             return
         }
 

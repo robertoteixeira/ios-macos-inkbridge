@@ -148,7 +148,9 @@ struct DrawingControlsView: View {
         canDisconnect: true,
         onConnect: {},
         onDisconnect: {},
-        discoveredServiceNames: ["InkBridge Mac"],
+        discoveredServices: [
+            DiscoveredRemoteInputServiceItem(id: "InkBridge Mac", name: "InkBridge Mac")
+        ],
         onConnectToDiscoveredService: { _ in },
         browserStatus: "Connected"
     )
@@ -170,7 +172,7 @@ struct DrawingControlsView: View {
         canDisconnect: false,
         onConnect: {},
         onDisconnect: {},
-        discoveredServiceNames: [],
+        discoveredServices: [],
         onConnectToDiscoveredService: { _ in },
         browserStatus: "Disconnected"
     )
@@ -191,8 +193,8 @@ private struct DrawingControlsPreview: View {
     let canDisconnect: Bool
     let onConnect: () -> Void
     let onDisconnect: () -> Void
-    let discoveredServiceNames: [String]
-    let onConnectToDiscoveredService: (String) -> Void
+    let discoveredServices: [DiscoveredRemoteInputServiceItem]
+    let onConnectToDiscoveredService: (DiscoveredRemoteInputServiceItem) -> Void
     let browserStatus: String
 
     @State private var remoteHost = "192.168.0.6"
@@ -215,10 +217,8 @@ private struct DrawingControlsPreview: View {
             canDisconnect: canDisconnect,
             onConnect: onConnect,
             onDisconnect: onDisconnect,
-            discoveredServices: [
-                DiscoveredRemoteInputServiceItem(id: "InkBridge Mac", name: "InkBridge Mac")
-            ],
-            onConnectToDiscoveredService: { _ in },
+            discoveredServices: discoveredServices,
+            onConnectToDiscoveredService: onConnectToDiscoveredService,
             browserStatus: browserStatus
         )
     }
