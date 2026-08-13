@@ -44,6 +44,7 @@ final class MacRemoteInputSession {
                 serviceName: RemoteInputServiceDefaults.name,
                 serviceType: RemoteInputServiceDefaults.type,
                 onConnection: { [weak self] connection in
+                    self?.connection?.stop()
                     self?.connection = connection
                     self?.connectionState = connection.state
                     connection.start()
@@ -52,7 +53,7 @@ final class MacRemoteInputSession {
                     self?.handle(event)
                 },
                 onConnectionStateChange: { [weak self] state in
-                    self?.connectionState = state
+                    self?.handleConnectionStateChange(state)
                 },
                 onListenerStateChange: { [weak self] state in
                     self?.listenerState = state
@@ -86,5 +87,16 @@ final class MacRemoteInputSession {
     private func handle(_ event: RemoteInputEvent) {
         eventHandler(event)
         eventLog = eventLog.adding(event)
+    }
+    
+    private func handleConnectionStateChange(_ state: RemoteInputConnectionState) {
+        connectionState = state
+
+        switch state {
+        case .disconnected, .failed:
+            connection = nil
+        case .connecting, .connected:
+            break
+        }
     }
 }
