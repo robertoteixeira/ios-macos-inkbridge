@@ -61,6 +61,9 @@ struct ContentView: View {
         .onAppear {
             session.startBrowsingForRemoteInputs()
         }
+        .onDisappear {
+            session.stopBrowsingForRemoteInputs()
+        }
     }
     
     private var canConnectToRemoteHost: Bool {

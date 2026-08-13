@@ -63,8 +63,12 @@ struct DrawingControlsView: View {
                 .disabled(!canDisconnect)
             }
 
-            if !discoveredServices.isEmpty {
-                VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .trailing, spacing: 4) {
+                if discoveredServices.isEmpty {
+                    Text("No Macs found")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
                     ForEach(discoveredServices) { service in
                         Button(action: {
                             onConnectToDiscoveredService(service)
