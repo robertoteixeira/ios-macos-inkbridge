@@ -26,6 +26,7 @@ struct DrawingControlsView: View {
     let discoveredServices: [DiscoveredRemoteInputServiceItem]
     let onConnectToDiscoveredService: (DiscoveredRemoteInputServiceItem) -> Void
     let browserStatus: String
+    let emptyDiscoveryMessage: String
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
@@ -65,7 +66,7 @@ struct DrawingControlsView: View {
 
             VStack(alignment: .trailing, spacing: 4) {
                 if discoveredServices.isEmpty {
-                    Text("No Macs found")
+                    Text(emptyDiscoveryMessage)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
@@ -156,7 +157,8 @@ struct DrawingControlsView: View {
             DiscoveredRemoteInputServiceItem(id: "InkBridge Mac", name: "InkBridge Mac")
         ],
         onConnectToDiscoveredService: { _ in },
-        browserStatus: "Connected"
+        browserStatus: "Connected",
+        emptyDiscoveryMessage: "No Macs found"
     )
     .padding()
 }
@@ -178,7 +180,8 @@ struct DrawingControlsView: View {
         onDisconnect: {},
         discoveredServices: [],
         onConnectToDiscoveredService: { _ in },
-        browserStatus: "Disconnected"
+        browserStatus: "Disconnected",
+        emptyDiscoveryMessage: "Searching for Macs..."
     )
     .padding()
 }
@@ -200,6 +203,7 @@ private struct DrawingControlsPreview: View {
     let discoveredServices: [DiscoveredRemoteInputServiceItem]
     let onConnectToDiscoveredService: (DiscoveredRemoteInputServiceItem) -> Void
     let browserStatus: String
+    let emptyDiscoveryMessage: String
 
     @State private var remoteHost = "192.168.0.6"
     @FocusState private var isRemoteHostFocused: Bool
@@ -223,7 +227,8 @@ private struct DrawingControlsPreview: View {
             onDisconnect: onDisconnect,
             discoveredServices: discoveredServices,
             onConnectToDiscoveredService: onConnectToDiscoveredService,
-            browserStatus: browserStatus
+            browserStatus: browserStatus,
+            emptyDiscoveryMessage: emptyDiscoveryMessage
         )
     }
 }

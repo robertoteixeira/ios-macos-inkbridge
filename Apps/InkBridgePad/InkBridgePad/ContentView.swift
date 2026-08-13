@@ -56,7 +56,8 @@ struct ContentView: View {
                     )
                 },
                 onConnectToDiscoveredService: connectToDiscoveredService,
-                browserStatus: session.browserState.displayName
+                browserStatus: session.browserState.displayName,
+                emptyDiscoveryMessage: discoveryMessage
             )
             .padding()
         }
@@ -67,8 +68,15 @@ struct ContentView: View {
             cleanupRemoteSession()
         }
         .onChange(of: scenePhase) { _, newPhase in
-            if newPhase == .background {
+            switch newPhase {
+            case .active:
+                session.startBrowsingForRemoteInputs()
+            case .background:
                 cleanupRemoteSession()
+            case .inactive:
+                break
+            @unknown default:
+                break
             }
         }
     }
@@ -81,6 +89,19 @@ struct ContentView: View {
             return !host.isEmpty
         case .connecting, .connected:
             return false
+        }
+    }
+    
+    private var discoveryMessage: String {
+        switch session.browserState {
+        case .connecting:
+            return "Searching for Macs..."
+        case .connected:
+            return "No Macs found"
+        case .failed(let message):
+            return message
+        case .disconnected:
+            return "Discovery stopped"
         }
     }
 

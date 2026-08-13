@@ -30,7 +30,7 @@ struct MacControlPanelView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
             
-            Text("Connection: \(connectionStatus)")
+            Text("Pad: \(connectionStatus)")
                 .font(.caption)
                 .foregroundStyle(.secondary)
             
