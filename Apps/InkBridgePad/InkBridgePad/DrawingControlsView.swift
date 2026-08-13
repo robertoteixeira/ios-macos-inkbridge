@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import InkBridgeProtocol
 
 struct DrawingControlsView: View {
     let completedStrokeCount: Int
@@ -16,7 +17,12 @@ struct DrawingControlsView: View {
     let onRedo: () -> Void
     let onClear: () -> Void
     let recentEvents: [String]
+    
     @Binding var remoteHost: String
+    @Binding var selectedTool: DrawingTool
+    @Binding var selectedColorHex: String
+    @Binding var strokeWidth: Double
+    
     let connectionStatus: String
     let isRemoteHostFocused: FocusState<Bool>.Binding
     let canConnect: Bool
@@ -58,7 +64,7 @@ struct DrawingControlsView: View {
                 .disabled(!canConnect)
 
                 Button(action: onDisconnect) {
-                    Image(systemName: "link.badge.minus")
+                    Image(systemName: "link.slash")
                 }
                 .accessibilityLabel("Disconnect")
                 .disabled(!canDisconnect)
@@ -80,6 +86,42 @@ struct DrawingControlsView: View {
                     }
                 }
             }
+            
+            Picker("Tool", selection: $selectedTool) {
+                Text("Pen").tag(DrawingTool.pen)
+                Text("Marker").tag(DrawingTool.marker)
+                Text("Highlighter").tag(DrawingTool.highlighter)
+                Text("Eraser").tag(DrawingTool.eraser)
+            }
+            .pickerStyle(.segmented)
+            .frame(width: 280)
+
+            HStack(spacing: 6) {
+                ForEach(["#000000", "#FF3B30", "#007AFF", "#FFCC00"], id: \.self) { colorHex in
+                    Button {
+                        selectedColorHex = colorHex
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(color(for: colorHex))
+                                .frame(width: 24, height: 24)
+
+                            if selectedColorHex == colorHex {
+                                Circle()
+                                    .stroke(.primary, lineWidth: 2)
+                                    .frame(width: 32, height: 32)
+                            }
+                        }
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(colorHex)
+                }
+            }
+
+            Slider(value: $strokeWidth, in: 1...16)
+                .frame(width: 180)
             
             Text("\(completedStrokeCount) strokes")
                 .font(.caption)
@@ -134,6 +176,19 @@ struct DrawingControlsView: View {
                     isRemoteHostFocused.wrappedValue = false
                 }
             }
+        }
+    }
+    
+    private func color(for hex: String) -> Color {
+        switch hex {
+        case "#FF3B30":
+            return .red
+        case "#007AFF":
+            return .blue
+        case "#FFCC00":
+            return .yellow
+        default:
+            return .black
         }
     }
 }
@@ -206,6 +261,9 @@ private struct DrawingControlsPreview: View {
     let emptyDiscoveryMessage: String
 
     @State private var remoteHost = "192.168.0.6"
+    @State private var selectedTool: DrawingTool = .pen
+    @State private var selectedColorHex = "#000000"
+    @State private var strokeWidth = 4.0
     @FocusState private var isRemoteHostFocused: Bool
 
     var body: some View {
@@ -219,6 +277,9 @@ private struct DrawingControlsPreview: View {
             onClear: onClear,
             recentEvents: recentEvents,
             remoteHost: $remoteHost,
+            selectedTool: $selectedTool,
+            selectedColorHex: $selectedColorHex,
+            strokeWidth: $strokeWidth,
             connectionStatus: connectionStatus,
             isRemoteHostFocused: $isRemoteHostFocused,
             canConnect: canConnect,

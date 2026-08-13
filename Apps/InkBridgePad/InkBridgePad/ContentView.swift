@@ -15,14 +15,22 @@ struct ContentView: View {
     @State private var undoneStrokes: [InkStroke] = []
     @State private var session = PadRemoteInputSession()
     @State private var remoteHost = RemoteInputConfiguration.host
+    @State private var selectedTool: DrawingTool = .pen
+    @State private var selectedColorHex = "#000000"
+    @State private var strokeWidth = 4.0
     @FocusState private var isRemoteHostFocused: Bool
-    
     @Environment(\.scenePhase) private var scenePhase
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             DrawingCanvasView(
                 completedStrokes: $completedStrokes,
+                strokeStyle: StrokeStyle(
+                    colorHex: selectedColorHex,
+                    width: strokeWidth,
+                    opacity: selectedTool == .highlighter ? 0.35 : 1.0,
+                    tool: selectedTool
+                ),
                 onRemoteInputEvent:  { event in
                     if case .strokeBegan = event {
                         undoneStrokes = []
@@ -43,6 +51,9 @@ struct ContentView: View {
                 onClear: clearCanvas,
                 recentEvents: session.eventLog.entries,
                 remoteHost: $remoteHost,
+                selectedTool: $selectedTool,
+                selectedColorHex: $selectedColorHex,
+                strokeWidth: $strokeWidth,
                 connectionStatus: session.connectionState.displayName,
                 isRemoteHostFocused: $isRemoteHostFocused,
                 canConnect: canConnectToRemoteHost,

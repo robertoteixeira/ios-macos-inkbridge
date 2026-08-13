@@ -10,17 +10,18 @@ import InkBridgeProtocol
 
 struct DrawingCanvasView: View {
     @Binding var completedStrokes: [InkStroke]
-    @State private var currentStroke: [CGPoint] = []
-    
+    let strokeStyle: InkBridgeProtocol.StrokeStyle
     let onRemoteInputEvent: (RemoteInputEvent) -> Void
+    
+    @State private var currentStroke: [CGPoint] = []
     
     var body: some View {
         GeometryReader { geometry in
             Canvas { context, _ in
                 for stroke in completedStrokes {
-                    draw(stroke.points, in: context)
+                    draw(stroke.points, style: stroke.style, in: context)
                 }
-                draw(currentStroke, in: context)
+                draw(currentStroke, style: currentStyle, in: context)
             }
             .background(.white)
             .gesture(
@@ -61,15 +62,13 @@ struct DrawingCanvasView: View {
     }
     
     private var currentStyle: InkBridgeProtocol.StrokeStyle {
-        StrokeStyle(
-            colorHex: "#000000",
-            width: 4,
-            opacity: 1.0,
-            tool: .pen
-        )
+        strokeStyle
     }
     
-    private func draw(_ stroke: [CGPoint], in context: GraphicsContext) {
+    private func draw(
+        _ stroke: [CGPoint],
+        style: InkBridgeProtocol.StrokeStyle,
+        in context: GraphicsContext) {
         guard let firstPoint = stroke.first else {
             return
         }
@@ -83,15 +82,34 @@ struct DrawingCanvasView: View {
         
         context.stroke(
             path,
-            with: .color(.black),
-            lineWidth: 4
+            with: .color(color(from: style.colorHex, opacity: style.opacity)),
+            lineWidth: style.width
         )
+    }
+    
+    private func color(from hex: String, opacity: Double) -> Color {
+        switch hex {
+        case "#FF3B30":
+            return .red.opacity(opacity)
+        case "#007AFF":
+            return .blue.opacity(opacity)
+        case "#FFCC00":
+            return .yellow.opacity(opacity)
+        default:
+            return .black.opacity(opacity)
+        }
     }
 }
 
 #Preview {
     DrawingCanvasView(
         completedStrokes: .constant([]),
+        strokeStyle: StrokeStyle(
+            colorHex: "#000000",
+            width: 4,
+            opacity: 1.0,
+            tool: .pen
+        ),
         onRemoteInputEvent: { _ in }
     )
 }
