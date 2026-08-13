@@ -17,6 +17,8 @@ struct ContentView: View {
     @State private var remoteHost = RemoteInputConfiguration.host
     @FocusState private var isRemoteHostFocused: Bool
     
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some View {
         ZStack(alignment: .topTrailing) {
             DrawingCanvasView(
@@ -62,7 +64,12 @@ struct ContentView: View {
             session.startBrowsingForRemoteInputs()
         }
         .onDisappear {
-            session.stopBrowsingForRemoteInputs()
+            cleanupRemoteSession()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            if newPhase == .background {
+                cleanupRemoteSession()
+            }
         }
     }
     
@@ -123,6 +130,11 @@ struct ContentView: View {
         completedStrokes = []
         undoneStrokes = []
         session.send(.clearCanvas)
+    }
+    
+    private func cleanupRemoteSession() {
+        session.stopBrowsingForRemoteInputs()
+        session.disconnect()
     }
 }
 
