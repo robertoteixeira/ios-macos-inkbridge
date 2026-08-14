@@ -90,7 +90,7 @@ struct DrawingControlsView: View {
             Picker("Tool", selection: $selectedTool) {
                 Text("Pen").tag(DrawingTool.pen)
                 Text("Marker").tag(DrawingTool.marker)
-                Text("Highlighter").tag(DrawingTool.highlighter)                
+                Text("Highlighter").tag(DrawingTool.highlighter)
             }
             .pickerStyle(.segmented)
             .frame(width: 280)
@@ -119,8 +119,17 @@ struct DrawingControlsView: View {
                 }
             }
 
-            Slider(value: $strokeWidth, in: 1...16)
-                .frame(width: 180)
+            HStack(spacing: 8) {
+                Slider(value: $strokeWidth, in: 1...16)
+                    .frame(width: 160)
+
+                Capsule()
+                    .fill(color(for: selectedColorHex).opacity(selectedTool == .highlighter ? 0.35 : 1.0))
+                    .frame(
+                        width: 44,
+                        height: previewStrokeWidth
+                    )
+            }
             
             Text("\(completedStrokeCount) strokes")
                 .font(.caption)
@@ -175,6 +184,17 @@ struct DrawingControlsView: View {
                     isRemoteHostFocused.wrappedValue = false
                 }
             }
+        }
+    }
+    
+    private var previewStrokeWidth: Double {
+        switch selectedTool {
+        case .marker:
+            return strokeWidth * 1.8
+        case .highlighter:
+            return strokeWidth * 2.4
+        case .pen, .eraser, .laserPointer:
+            return strokeWidth
         }
     }
     
