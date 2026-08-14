@@ -90,8 +90,7 @@ struct DrawingControlsView: View {
             Picker("Tool", selection: $selectedTool) {
                 Text("Pen").tag(DrawingTool.pen)
                 Text("Marker").tag(DrawingTool.marker)
-                Text("Highlighter").tag(DrawingTool.highlighter)
-                Text("Eraser").tag(DrawingTool.eraser)
+                Text("Highlighter").tag(DrawingTool.highlighter)                
             }
             .pickerStyle(.segmented)
             .frame(width: 280)

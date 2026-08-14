@@ -27,8 +27,8 @@ struct ContentView: View {
                 completedStrokes: $completedStrokes,
                 strokeStyle: StrokeStyle(
                     colorHex: selectedColorHex,
-                    width: strokeWidth,
-                    opacity: selectedTool == .highlighter ? 0.35 : 1.0,
+                    width: selectedStrokeWidth,
+                    opacity: selectedStrokeOpacity,
                     tool: selectedTool
                 ),
                 onRemoteInputEvent:  { event in
@@ -113,6 +113,26 @@ struct ContentView: View {
             return message
         case .disconnected:
             return "Discovery stopped"
+        }
+    }
+    
+    private var selectedStrokeWidth: Double {
+        switch selectedTool {
+        case .marker:
+            return strokeWidth * 1.8
+        case .highlighter:
+            return strokeWidth * 2.4
+        case .pen, .eraser, .laserPointer:
+            return strokeWidth
+        }
+    }
+
+    private var selectedStrokeOpacity: Double {
+        switch selectedTool {
+        case .highlighter:
+            return 0.35
+        case .pen, .marker, .eraser, .laserPointer:
+            return 1.0
         }
     }
 
