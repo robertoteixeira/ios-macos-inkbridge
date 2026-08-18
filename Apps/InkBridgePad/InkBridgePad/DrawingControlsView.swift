@@ -33,6 +33,8 @@ struct DrawingControlsView: View {
     let onConnectToDiscoveredService: (DiscoveredRemoteInputServiceItem) -> Void
     let browserStatus: String
     let emptyDiscoveryMessage: String
+    
+    @State private var showsRecentEvents = false
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 8) {
@@ -159,17 +161,17 @@ struct DrawingControlsView: View {
                 .disabled(!canRedo)
             }
             
-            VStack(alignment: .trailing, spacing: 4) {
-                ForEach(Array(recentEvents.enumerated()), id: \.offset) { _, event in
-                    Text(event)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
+            DisclosureGroup("Events", isExpanded: $showsRecentEvents) {
+                VStack(alignment: .trailing, spacing: 4) {
+                    ForEach(Array(recentEvents.enumerated()), id: \.offset) { _, event in
+                        Text(event)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(.thinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .font(.caption)
+            .frame(width: 180)
 
             Button(action: onClear) {
                 Label("Clear", systemImage: "trash")
