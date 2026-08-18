@@ -51,12 +51,12 @@ struct MacControlPanelView: View {
 
             Button(action: onToggleOverlay) {
                 Label(
-                    isOverlayVisible ? "Hide Overlay" : "Show Overlay",
-                    systemImage: isOverlayVisible ? "eye.slash" : "eye"
+                    isOverlayVisible ? "Stop Overlay" : "Start Overlay",
+                    systemImage: isOverlayVisible ? "stop.circle" : "play.circle"
                 )
             }
             .buttonStyle(.borderedProminent)
-            .accessibilityLabel(isOverlayVisible ? "Hide overlay" : "Show overlay")
+            .accessibilityLabel(isOverlayVisible ? "Stop overlay" : "Start overlay")
 
             Button(action: onClearOverlay) {
                 Label("Clear Overlay", systemImage: "trash")
