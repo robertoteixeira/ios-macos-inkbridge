@@ -20,8 +20,8 @@ final class OverlayWindowController {
             return
         }
         
-        let screenFrame = NSScreen.main?.frame ?? .zero
-        
+        let screenFrame = targetScreenFrame()
+
         let window = NSWindow(
             contentRect: screenFrame,
             styleMask: [.borderless],
@@ -56,5 +56,9 @@ final class OverlayWindowController {
         viewModel.clear()
         window?.close()
         window = nil
+    }
+    
+    private func targetScreenFrame() -> CGRect {
+        NSScreen.main?.frame ?? NSScreen.screens.first?.frame ?? .zero
     }
 }
