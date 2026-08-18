@@ -42,6 +42,7 @@ final class OverlayWindowController {
             rootView: OverlayView(viewModel: viewModel)
         )
         
+        window.isReleasedWhenClosed = false
         window.makeKeyAndOrderFront(nil)
         
         self.window = window
@@ -52,6 +53,7 @@ final class OverlayWindowController {
     }
     
     func hideOverlay() {
-        window?.orderOut(nil)
+        window?.close()
+        window = nil
     }
 }
