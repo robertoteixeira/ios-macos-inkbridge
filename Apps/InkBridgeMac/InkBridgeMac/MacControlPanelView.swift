@@ -19,6 +19,7 @@ struct MacControlPanelView: View {
     let connectionStatus: String
     
     @State private var showsRecentEvents = false
+    @State private var showsDeveloperTools = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -77,15 +78,15 @@ struct MacControlPanelView: View {
                 .disabled(!isOverlayVisible)
             }
 
-            Button(action: onAddTestStroke) {
-                Label("Add Test Stroke", systemImage: "scribble.variable")
+            DisclosureGroup("Developer", isExpanded: $showsDeveloperTools) {
+                Button(action: onAddTestStroke) {
+                    Label("Add Test Stroke", systemImage: "scribble.variable")
+                }
+                .disabled(!isOverlayVisible)
+                .accessibilityLabel("Add test stroke")
             }
-            .disabled(!isOverlayVisible)
-            .accessibilityLabel("Add test stroke")
-
-            Text("Local test event")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            .font(.caption)
+            .frame(width: 180)
         }
     }
 }
