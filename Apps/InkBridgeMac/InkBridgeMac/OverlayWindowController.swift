@@ -53,6 +53,7 @@ final class OverlayWindowController {
     }
     
     func hideOverlay() {
+        viewModel.clear()
         window?.close()
         window = nil
     }
