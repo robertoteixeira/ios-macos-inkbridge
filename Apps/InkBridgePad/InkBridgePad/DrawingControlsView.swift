@@ -7,6 +7,7 @@
 
 import SwiftUI
 import InkBridgeProtocol
+import InkBridgeRendering
 
 struct DrawingControlsView: View {
     let completedStrokeCount: Int
@@ -201,16 +202,15 @@ struct DrawingControlsView: View {
     }
     
     private func color(for hex: String) -> Color {
-        switch hex {
-        case "#FF3B30":
+        guard let rgbColor = HexColorParser.parse(hex) else {
             return .red
-        case "#007AFF":
-            return .blue
-        case "#FFCC00":
-            return .yellow
-        default:
-            return .black
         }
+
+        return Color(
+            red: rgbColor.red,
+            green: rgbColor.green,
+            blue: rgbColor.blue
+        )
     }
 }
 

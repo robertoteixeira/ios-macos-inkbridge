@@ -7,6 +7,7 @@
 
 import SwiftUI
 import InkBridgeProtocol
+import InkBridgeRendering
 
 struct DrawingCanvasView: View {
     @Binding var completedStrokes: [InkStroke]
@@ -88,16 +89,16 @@ struct DrawingCanvasView: View {
     }
     
     private func color(from hex: String, opacity: Double) -> Color {
-        switch hex {
-        case "#FF3B30":
+        guard let rgbColor = HexColorParser.parse(hex) else {
             return .red.opacity(opacity)
-        case "#007AFF":
-            return .blue.opacity(opacity)
-        case "#FFCC00":
-            return .yellow.opacity(opacity)
-        default:
-            return .black.opacity(opacity)
         }
+
+        return Color(
+            red: rgbColor.red,
+            green: rgbColor.green,
+            blue: rgbColor.blue,
+            opacity: opacity
+        )
     }
 }
 
