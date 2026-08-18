@@ -10,13 +10,13 @@ import InkBridgeProtocol
 import InkBridgeNetworking
 
 struct ContentView: View {
-    @State private var isOverlayVisible = false
+    @State private var isOverlayRunning = false
     @State private var overlayWindowController = OverlayWindowController()
     @State private var session: MacRemoteInputSession?
 
     var body: some View {
         MacControlPanelView(
-            isOverlayVisible: isOverlayVisible,
+            isOverlayVisible: isOverlayRunning,
             recentEvents: session?.eventLog.entries ?? [],
             onToggleOverlay: toggleOverlay,
             onClearOverlay: {
@@ -45,9 +45,9 @@ struct ContentView: View {
     }
     
     private func toggleOverlay() {
-        isOverlayVisible.toggle()
+        isOverlayRunning.toggle()
 
-        if isOverlayVisible {
+        if isOverlayRunning {
             if session == nil {
                 session = MacRemoteInputSession { event in
                     overlayWindowController.handle(event)
