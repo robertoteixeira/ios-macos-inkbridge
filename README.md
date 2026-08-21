@@ -6,11 +6,15 @@ InkBridge lets an iPad act as a drawing remote for a Mac overlay.
 
 1. Open `InkBridge.xcworkspace`.
 2. Run `InkBridgeMac`.
-3. In the Mac app, show the overlay. This starts the remote input listener on port `9876`.
-4. Run `InkBridgePad`.
-5. Enter the Mac IP address in the Pad controls.
-6. Tap Connect.
-7. Draw on the Pad. Strokes should appear on the Mac overlay.
+3. Click **Start Overlay**. This shows the transparent overlay and starts the remote input listener on port `9876`.
+4. Run `InkBridgePad` on an iPad, iPhone, or simulator.
+5. Wait for `InkBridge Mac` to appear under discovery.
+6. Tap the discovered Mac.
+7. Draw on the Pad. Strokes appear on the Mac overlay.
+8. Use the Pad controls to change pen, marker, highlighter, color, and width.
+9. Use undo, redo, and clear from the Pad.
+
+Manual IP connection is still available with port `9876`.
 
 ## Finding The Mac IP
 
@@ -24,11 +28,7 @@ After showing the overlay:
 
     lsof -nP -iTCP:9876 -sTCP:LISTEN
 
-## Test Commands
-
-Networking package:
-
-    swift test --package-path Packages/InkBridgeNetworking
+## Build Checks
 
 Protocol package:
 
@@ -37,6 +37,10 @@ Protocol package:
 Rendering package:
 
     swift test --package-path Packages/InkBridgeRendering
+
+Networking package:
+
+    swift test --package-path Packages/InkBridgeNetworking
 
 Mac build:
 
@@ -48,4 +52,4 @@ Pad build:
 
 ## Notes
 
-The current connection flow is manual. Bonjour/device discovery is not implemented yet.
+Bonjour discovery is implemented for the local network flow. Manual IP connection remains available as a fallback.
